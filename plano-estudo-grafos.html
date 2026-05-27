@@ -1,0 +1,3175 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teoria dos Grafos — Guia Completo (Prof. Tenório)</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e1a;
+      --bg2: #111827;
+      --bg3: #1a2235;
+      --card: #1e2a3a;
+      --card2: #243347;
+      --border: #2d4060;
+      --accent: #3b82f6;
+      --accent2: #6366f1;
+      --accent3: #10b981;
+      --accent4: #f59e0b;
+      --accent5: #ef4444;
+      --accent6: #8b5cf6;
+      --text: #e2e8f0;
+      --text2: #94a3b8;
+      --text3: #64748b;
+      --gradient: linear-gradient(135deg, #3b82f6, #6366f1);
+      --gradient2: linear-gradient(135deg, #10b981, #3b82f6);
+      --gradient3: linear-gradient(135deg, #f59e0b, #ef4444);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.7;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg2);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #0a0e1a 0%, #111827 40%, #1a1a2e 100%);
+      padding: 80px 40px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 60%);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: var(--accent);
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .hero p {
+      color: var(--text2);
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto 30px;
+      position: relative;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* NAV */
+    .toc-wrapper {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .toc-title {
+      font-size: 0.75rem;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .toc-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .toc-link {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .toc-link:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* MAIN */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* SECTION */
+    .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 24px 32px;
+      background: var(--card2);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .section-num {
+      width: 40px;
+      height: 40px;
+      background: var(--gradient);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .section-sub {
+      font-size: 0.85rem;
+      color: var(--text3);
+      margin-top: 2px;
+    }
+
+    .section-body {
+      padding: 28px 32px;
+    }
+
+    /* TOPIC */
+    .topic {
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topic:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .topic-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .topic-title::before {
+      content: '▶';
+      font-size: 0.7rem;
+      color: var(--accent2);
+    }
+
+    .topic p {
+      color: var(--text2);
+      margin-bottom: 10px;
+    }
+
+    /* BOXES */
+    .def-box {
+      background: rgba(59, 130, 246, 0.08);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 14px 0;
+      color: var(--text);
+    }
+
+    .def-box strong {
+      color: var(--accent);
+    }
+
+    .rule-box {
+      background: rgba(16, 185, 129, 0.08);
+      border-left: 3px solid var(--accent3);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 14px 0;
+    }
+
+    .rule-box strong {
+      color: var(--accent3);
+    }
+
+    .warn-box {
+      background: rgba(245, 158, 11, 0.08);
+      border-left: 3px solid var(--accent4);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 14px 0;
+    }
+
+    .warn-box strong {
+      color: var(--accent4);
+    }
+
+    .formula-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 14px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      text-align: center;
+      color: var(--accent4);
+    }
+
+    /* MATRIX */
+    .matrix-wrapper {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+
+    .matrix-table {
+      border-collapse: collapse;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+    }
+
+    .matrix-table th {
+      background: var(--card2);
+      color: var(--accent);
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .matrix-table td {
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      text-align: center;
+      color: var(--text2);
+    }
+
+    .matrix-table td.one {
+      color: var(--accent3);
+      font-weight: 700;
+    }
+
+    .matrix-table td.diag {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--accent5);
+    }
+
+    /* GRAPH SVG */
+    .graph-container {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 16px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .graph-label {
+      font-size: 0.8rem;
+      color: var(--text3);
+      text-align: center;
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    svg text {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* TAGS */
+    .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin: 3px;
+    }
+
+    .tag-blue {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .tag-green {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent3);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .tag-yellow {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent4);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .tag-red {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--accent5);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .tag-purple {
+      background: rgba(139, 92, 246, 0.15);
+      color: var(--accent6);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+
+    /* LIST */
+    ul.nice {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul.nice li {
+      padding: 6px 0 6px 22px;
+      position: relative;
+      color: var(--text2);
+    }
+
+    ul.nice li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* COMPLEXITY TABLE */
+    .complexity-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .complexity-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .complexity-notation {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .complexity-name {
+      font-size: 0.8rem;
+      color: var(--text3);
+      margin-bottom: 4px;
+    }
+
+    .complexity-example {
+      font-size: 0.75rem;
+      color: var(--text2);
+    }
+
+    /* QUESTIONS */
+    .questions-section {
+      margin-top: 40px;
+    }
+
+    .q-divider {
+      text-align: center;
+      margin: 40px 0 24px;
+      position: relative;
+    }
+
+    .q-divider::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .q-divider span {
+      position: relative;
+      background: var(--bg);
+      padding: 0 20px;
+      font-size: 0.8rem;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .question-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .question-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 24px;
+      background: var(--card2);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .question-header:hover {
+      background: rgba(59, 130, 246, 0.08);
+    }
+
+    .q-num {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .q-num.fechada {
+      background: rgba(99, 102, 241, 0.2);
+      color: var(--accent2);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+    }
+
+    .q-num.aberta {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--accent3);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .q-text {
+      font-size: 0.95rem;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .q-toggle {
+      color: var(--text3);
+      font-size: 1.2rem;
+      transition: transform 0.3s;
+    }
+
+    .q-toggle.open {
+      transform: rotate(180deg);
+    }
+
+    .question-body {
+      padding: 20px 24px;
+      display: none;
+    }
+
+    .question-body.show {
+      display: block;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 0.9rem;
+      cursor: default;
+    }
+
+    .option.correct {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: var(--accent3);
+      color: var(--text);
+    }
+
+    .option-letter {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .option.correct .option-letter {
+      background: var(--accent3);
+      color: #fff;
+    }
+
+    .answer-box {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 10px;
+      padding: 16px;
+      color: var(--text2);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .answer-label {
+      font-size: 0.75rem;
+      color: var(--accent3);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .gabarito-badge {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: var(--accent3);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 30px;
+      color: var(--text3);
+      font-size: 0.85rem;
+      margin-top: 60px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .hero {
+        padding: 50px 20px 40px;
+      }
+
+      .toc-wrapper {
+        padding: 14px 20px;
+      }
+
+      .section-body {
+        padding: 20px;
+      }
+
+      .section-header {
+        padding: 18px 20px;
+      }
+
+      .question-header {
+        padding: 14px 18px;
+      }
+
+      .question-body {
+        padding: 16px 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="hero">
+    <div class="hero-badge">Prof. Tenório • Teoria dos Grafos</div>
+    <h1>Guia Completo de Teoria dos Grafos</h1>
+    <p>Do zero ao avançado — todos os 17 tópicos da prova explicados com exemplos, grafos desenhados, matrizes e 50
+      questões comentadas.</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">17</div>
+        <div class="stat-label">Tópicos da Prova</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">50</div>
+        <div class="stat-label">Questões</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">20</div>
+        <div class="stat-label">Fechadas</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">30</div>
+        <div class="stat-label">Abertas</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toc-wrapper">
+    <div class="toc-title">Navegação Rápida</div>
+    <div class="toc-links">
+      <a class="toc-link" href="#basico">Conceitos Básicos</a>
+      <a class="toc-link" href="#matriz">Matriz de Adjacência</a>
+      <a class="toc-link" href="#altirr">Altamente Irregular</a>
+      <a class="toc-link" href="#articulacao">Articulação e Ponte</a>
+      <a class="toc-link" href="#bipartido">Bipartido</a>
+      <a class="toc-link" href="#blocos">Blocos</a>
+      <a class="toc-link" href="#cadeia">Cadeia</a>
+      <a class="toc-link" href="#coloracao">Coloração</a>
+      <a class="toc-link" href="#completo">Completo e Complemento</a>
+      <a class="toc-link" href="#complexidade">Complexidade</a>
+      <a class="toc-link" href="#delta">Delta e Cúbico</a>
+      <a class="toc-link" href="#elo">ELO e Posto</a>
+      <a class="toc-link" href="#empar">Emparelhamento</a>
+      <a class="toc-link" href="#fonte">Fonte e Sumidouro</a>
+      <a class="toc-link" href="#onorifico">Onorífico</a>
+      <a class="toc-link" href="#reducao">Redução Transitiva</a>
+      <a class="toc-link" href="#scie">SCIE e SCEE</a>
+      <a class="toc-link" href="#triangulacao">Triangulação</a>
+      <a class="toc-link" href="#questoes">50 Questões</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- ===== PARTE 1: BÁSICO ===== -->
+    <section class="section" id="basico">
+      <div class="section-header">
+        <div class="section-num">0</div>
+        <div>
+          <div class="section-title">Fundamentos: O Ponto de Partida</div>
+          <div class="section-sub">O que é um grafo, vértices, arestas e tudo que você precisa saber antes de começar
+          </div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">O que é um Grafo?</div>
+          <p>Pense em um <strong>mapa de cidades</strong>. As cidades são os pontos e as estradas que as conectam são as
+            linhas. Isso é um grafo. Formalmente, um grafo G é um par G = (V, E) onde V é o conjunto de vértices e E é o
+            conjunto de arestas.</p>
+          <div class="def-box">
+            <strong>Vértice (ou Nó):</strong> Os "pontinhos" do grafo. Representados por N (quantidade total de
+            vértices).<br>
+            <strong>Aresta:</strong> As "linhas" que ligam dois vértices. Representadas por M (quantidade total de
+            arestas).<br>
+            <strong>Laço:</strong> Uma aresta que sai de um vértice e volta para o próprio vértice.<br>
+            <strong>Grau de um vértice:</strong> Quantas arestas tocam naquele vértice. Cada laço conta como 2.<br>
+            <strong>Dígrafo:</strong> Grafo com setas (direcionado). Cada seta tem origem e destino.
+          </div>
+          <div class="rule-box">
+            <strong>Teorema do Aperto de Mãos:</strong> A soma de todos os graus dos vértices é sempre igual ao dobro do
+            número de arestas.<br>
+            <span style="font-family:JetBrains Mono,monospace; color:#10b981;">Σ graus = 2 × M</span><br>
+            Isso significa que sempre há um número par de vértices com grau ímpar!
+          </div>
+
+          <!-- SVG: grafo simples -->
+          <div class="graph-container">
+            <svg width="320" height="200" viewBox="0 0 320 200">
+              <!-- arestas -->
+              <line x1="80" y1="100" x2="160" y2="50" stroke="#3b82f6" stroke-width="2" />
+              <line x1="80" y1="100" x2="160" y2="150" stroke="#3b82f6" stroke-width="2" />
+              <line x1="160" y1="50" x2="240" y2="100" stroke="#3b82f6" stroke-width="2" />
+              <line x1="160" y1="150" x2="240" y2="100" stroke="#3b82f6" stroke-width="2" />
+              <line x1="160" y1="50" x2="160" y2="150" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="5,3" />
+              <!-- vértices -->
+              <circle cx="80" cy="100" r="18" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="160" cy="50" r="18" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="160" cy="150" r="18" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="240" cy="100" r="18" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <!-- labels -->
+              <text x="80" y="105" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="bold">1</text>
+              <text x="160" y="55" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="bold">2</text>
+              <text x="160" y="155" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="bold">3</text>
+              <text x="240" y="105" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="bold">4</text>
+              <!-- graus -->
+              <text x="52" y="86" fill="#94a3b8" font-size="11">grau=2</text>
+              <text x="164" y="30" fill="#94a3b8" font-size="11">grau=3</text>
+              <text x="164" y="175" fill="#94a3b8" font-size="11">grau=3</text>
+              <text x="244" y="86" fill="#94a3b8" font-size="11">grau=2</text>
+            </svg>
+            <div class="graph-label">Grafo simples com 4 vértices e 5 arestas. Soma dos graus = 2+3+3+2 = 10 = 2×5 ✓
+            </div>
+          </div>
+        </div>
+
+        <div class="topic">
+          <div class="topic-title">Tipos de Grafo que Você Vai Ver</div>
+          <div
+            style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:12px;">
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;">
+              <div style="color:var(--accent);font-weight:700;margin-bottom:6px;">Grafo Simples</div>
+              <div style="color:var(--text2);font-size:0.85rem;">Sem laços e sem arestas paralelas (duas arestas entre
+                os mesmos dois vértices).</div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;">
+              <div style="color:var(--accent);font-weight:700;margin-bottom:6px;">Grafo Trivial</div>
+              <div style="color:var(--text2);font-size:0.85rem;">O menor grafo possível: 1 vértice, 0 arestas.</div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;">
+              <div style="color:var(--accent);font-weight:700;margin-bottom:6px;">Grafo Regular</div>
+              <div style="color:var(--text2);font-size:0.85rem;">Todos os vértices têm o mesmo grau.</div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;">
+              <div style="color:var(--accent);font-weight:700;margin-bottom:6px;">Dígrafo</div>
+              <div style="color:var(--text2);font-size:0.85rem;">Grafo com arestas direcionadas (setas). Cada aresta tem
+                grau de entrada e de saída.</div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;">
+              <div style="color:var(--accent);font-weight:700;margin-bottom:6px;">Grafo Conexo</div>
+              <div style="color:var(--text2);font-size:0.85rem;">Existe caminho entre qualquer par de vértices. Nenhum
+                vértice está isolado.</div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;">
+              <div style="color:var(--accent);font-weight:700;margin-bottom:6px;">Subgrafo</div>
+              <div style="color:var(--text2);font-size:0.85rem;">Um "pedaço" do grafo original — alguns vértices e
+                algumas arestas do original.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== MATRIZ DE ADJACÊNCIA ===== -->
+    <section class="section" id="matriz">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div>
+          <div class="section-title">Matriz de Adjacência</div>
+          <div class="section-sub">Como transformar um grafo em tabela e vice-versa</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">O que é e como ler</div>
+          <p>A matriz de adjacência é como um jogo de Batalha Naval. As linhas são a origem e as colunas são o destino.
+            Valor <strong style="color:#10b981;">1</strong> = tem aresta. Valor <strong
+              style="color:#64748b;">0</strong> = não tem aresta.</p>
+          <div class="matrix-wrapper">
+            <table class="matrix-table">
+              <tr>
+                <th></th>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+              </tr>
+              <tr>
+                <th>1</th>
+                <td class="diag">0</td>
+                <td class="one">1</td>
+                <td class="one">1</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <th>2</th>
+                <td class="one">1</td>
+                <td class="diag">0</td>
+                <td>0</td>
+                <td class="one">1</td>
+              </tr>
+              <tr>
+                <th>3</th>
+                <td class="one">1</td>
+                <td>0</td>
+                <td class="diag">0</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <th>4</th>
+                <td>0</td>
+                <td class="one">1</td>
+                <td>0</td>
+                <td class="diag">0</td>
+              </tr>
+            </table>
+            <div>
+              <div class="def-box">
+                <strong>Dicas de ouro ao olhar a matriz:</strong><br>
+                • Diagonal principal com 1 = tem laço<br>
+                • Grafo não-direcionado = matriz simétrica<br>
+                • Soma da linha = grau do vértice<br>
+                • Grau do vértice 1 = 1+1+0 = 2<br>
+                • Grau do vértice 2 = 1+0+1 = 2<br>
+                • Grau do vértice 3 = 1+0+0 = 1<br>
+                • Grau do vértice 4 = 1+0+0 = 1
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Como Desenhar um Grafo a Partir de uma Matriz (Passo a Passo)</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;flex-wrap:wrap;">
+            <div>
+              <div class="rule-box">
+                <strong>Passo 1:</strong> Conte o número de linhas/colunas. São os seus vértices. Desenhe esse número de
+                bolinhas e numere-as.<br><br>
+                <strong>Passo 2:</strong> Olhe a linha 1. Onde tiver 1, desenhe um traço do vértice 1 até aquele
+                vértice.<br><br>
+                <strong>Passo 3:</strong> Repita para cada linha. Se já desenhou a ligação (ex: 2→1 já está como 1→2),
+                não desenhe de novo.<br><br>
+                <strong>Passo 4:</strong> Se a diagonal tiver 1, desenhe um laço (arco que sai e volta ao mesmo
+                vértice).<br><br>
+                <strong>Resultado:</strong> Você tem o grafo completo!
+              </div>
+            </div>
+            <div class="graph-container">
+              <svg width="260" height="180" viewBox="0 0 260 180">
+                <line x1="60" y1="90" x2="130" y2="40" stroke="#3b82f6" stroke-width="2" />
+                <line x1="60" y1="90" x2="130" y2="140" stroke="#3b82f6" stroke-width="2" />
+                <line x1="130" y1="40" x2="200" y2="90" stroke="#3b82f6" stroke-width="2" />
+                <circle cx="60" cy="90" r="16" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+                <circle cx="130" cy="40" r="16" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+                <circle cx="130" cy="140" r="16" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+                <circle cx="200" cy="90" r="16" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+                <text x="60" y="95" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">1</text>
+                <text x="130" y="45" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">2</text>
+                <text x="130" y="145" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">3</text>
+                <text x="200" y="95" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">4</text>
+              </svg>
+              <div class="graph-label">Grafo gerado pela matriz acima: 1-2, 1-3, 2-4</div>
+            </div>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Matriz de Adjacência em Dígrafos</div>
+          <p>Em um dígrafo (grafo com setas), a matriz <strong>não</strong> é simétrica. A linha indica a
+            <strong>origem</strong> da seta e a coluna indica o <strong>destino</strong>.
+          </p>
+          <div class="matrix-wrapper">
+            <table class="matrix-table">
+              <tr>
+                <th></th>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+              </tr>
+              <tr>
+                <th>1</th>
+                <td class="diag">0</td>
+                <td class="one">1</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <th>2</th>
+                <td>0</td>
+                <td class="diag">0</td>
+                <td class="one">1</td>
+              </tr>
+              <tr>
+                <th>3</th>
+                <td class="one">1</td>
+                <td>0</td>
+                <td class="diag">0</td>
+              </tr>
+            </table>
+            <div class="graph-container" style="flex:1;min-width:200px;">
+              <svg width="220" height="150" viewBox="0 0 220 150">
+                <defs>
+                  <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                    <path d="M0,0 L0,6 L8,3 z" fill="#3b82f6" />
+                  </marker>
+                </defs>
+                <line x1="60" y1="75" x2="115" y2="40" stroke="#3b82f6" stroke-width="2" marker-end="url(#arr)" />
+                <line x1="130" y1="35" x2="155" y2="60" stroke="#3b82f6" stroke-width="2" marker-end="url(#arr)" />
+                <line x1="165" y1="90" x2="80" y2="82" stroke="#3b82f6" stroke-width="2" marker-end="url(#arr)" />
+                <circle cx="55" cy="80" r="16" fill="#1e2a3a" stroke="#6366f1" stroke-width="2" />
+                <circle cx="130" cy="30" r="16" fill="#1e2a3a" stroke="#6366f1" stroke-width="2" />
+                <circle cx="165" cy="100" r="16" fill="#1e2a3a" stroke="#6366f1" stroke-width="2" />
+                <text x="55" y="85" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">1</text>
+                <text x="130" y="35" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">2</text>
+                <text x="165" y="105" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">3</text>
+              </svg>
+              <div class="graph-label">Dígrafo: 1→2, 2→3, 3→1 (ciclo)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ALTAMENTE IRREGULAR -->
+    <section class="section" id="altirr">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div>
+          <div class="section-title">Altamente Irregular</div>
+          <div class="section-sub">A regra da diversidade: nenhum vértice pode ter vizinhos com o mesmo grau que ele
+          </div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">A Regra Central</div>
+          <p>Um grafo é <strong>Altamente Irregular</strong> quando, para todo vértice do grafo, todos os seus vizinhos
+            diretos possuem graus <em>diferentes</em> entre si. Ou seja, os vizinhos de um vértice têm graus todos
+            distintos um do outro.</p>
+          <div class="def-box">
+            <strong>Definição formal:</strong> Um grafo G é altamente irregular se, para cada vértice v de G, todos os
+            vértices adjacentes a v possuem graus mutuamente distintos.
+          </div>
+          <div class="warn-box">
+            <strong>Atenção:</strong> Não confunda com "irregular" (onde só os graus dos vértices do grafo inteiro são
+            todos distintos). No altamente irregular, a condição é sobre os <em>vizinhos</em> de cada vértice.
+          </div>
+          <div class="graph-container">
+            <svg width="320" height="180" viewBox="0 0 320 180">
+              <!-- Exemplo de grafo altamente irregular simples -->
+              <line x1="160" y1="90" x2="60" y2="50" stroke="#3b82f6" stroke-width="2" />
+              <line x1="160" y1="90" x2="260" y2="50" stroke="#3b82f6" stroke-width="2" />
+              <line x1="160" y1="90" x2="160" y2="160" stroke="#3b82f6" stroke-width="2" />
+              <line x1="60" y1="50" x2="260" y2="50" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="4,3" />
+              <!-- vértices -->
+              <circle cx="160" cy="90" r="18" fill="#1e2a3a" stroke="#10b981" stroke-width="2.5" />
+              <circle cx="60" cy="50" r="18" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="260" cy="50" r="18" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="160" cy="160" r="18" fill="#1e2a3a" stroke="#f59e0b" stroke-width="2" />
+              <text x="160" y="95" text-anchor="middle" fill="#10b981" font-size="13" font-weight="bold">C</text>
+              <text x="60" y="55" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">A</text>
+              <text x="260" y="55" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">B</text>
+              <text x="160" y="165" text-anchor="middle" fill="#f59e0b" font-size="13" font-weight="bold">D</text>
+              <!-- graus -->
+              <text x="160" y="112" text-anchor="middle" fill="#94a3b8" font-size="10">grau=3</text>
+              <text x="36" y="40" fill="#94a3b8" font-size="10">grau=2</text>
+              <text x="263" y="40" fill="#94a3b8" font-size="10">grau=2</text>
+              <text x="160" y="185" text-anchor="middle" fill="#94a3b8" font-size="10">grau=1</text>
+            </svg>
+            <div class="graph-label">Vértice C (grau 3) tem vizinhos A(grau 2), B(grau 2), D(grau 1) — A e B têm o mesmo
+              grau! Este NÃO é altamente irregular.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARTICULAÇÃO E PONTE -->
+    <section class="section" id="articulacao">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div>
+          <div class="section-title">Articulação e Ponte</div>
+          <div class="section-sub">O calcanhar de Aquiles do grafo: os pontos e linhas que, se removidos, quebram tudo
+          </div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">Articulação (Vértice de Corte)</div>
+          <p>É um <strong>vértice</strong> que, se você apagar ele do grafo (junto com todas as arestas que tocam nele),
+            o grafo que era conexo se divide em dois ou mais pedaços separados.</p>
+          <div class="def-box">
+            <strong>Como identificar:</strong> Imagine que você apaga o vértice. Se sobrar mais de um "grupinho" de
+            vértices desconectados entre si, aquele era um vértice de articulação.
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Ponte (Aresta de Corte)</div>
+          <p>É uma <strong>aresta</strong> que, se você cortar ela, o grafo se divide em dois pedaços. É o "calcanhar de
+            Aquiles" das arestas.</p>
+          <div class="graph-container">
+            <svg width="380" height="180" viewBox="0 0 380 180">
+              <!-- lado esquerdo (triângulo) -->
+              <line x1="60" y1="90" x2="110" y2="40" stroke="#3b82f6" stroke-width="2" />
+              <line x1="60" y1="90" x2="110" y2="140" stroke="#3b82f6" stroke-width="2" />
+              <line x1="110" y1="40" x2="110" y2="140" stroke="#3b82f6" stroke-width="2" />
+              <!-- ponte -->
+              <line x1="110" y1="90" x2="270" y2="90" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="8,3" />
+              <!-- lado direito (triângulo) -->
+              <line x1="270" y1="40" x2="270" y2="140" stroke="#3b82f6" stroke-width="2" />
+              <line x1="270" y1="40" x2="320" y2="90" stroke="#3b82f6" stroke-width="2" />
+              <line x1="270" y1="140" x2="320" y2="90" stroke="#3b82f6" stroke-width="2" />
+              <!-- vértices -->
+              <circle cx="60" cy="90" r="14" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="110" cy="40" r="14" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="110" cy="140" r="14" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="110" cy="90" r="14" fill="#1e2a3a" stroke="#ef4444" stroke-width="3" />
+              <circle cx="270" cy="90" r="14" fill="#1e2a3a" stroke="#ef4444" stroke-width="3" />
+              <circle cx="270" cy="40" r="14" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="270" cy="140" r="14" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="320" cy="90" r="14" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <!-- rótulos -->
+              <text x="60" y="95" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="bold">1</text>
+              <text x="110" y="45" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="bold">2</text>
+              <text x="110" y="145" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="bold">3</text>
+              <text x="110" y="95" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="bold">4</text>
+              <text x="270" y="95" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="bold">5</text>
+              <text x="270" y="45" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="bold">6</text>
+              <text x="270" y="145" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="bold">7</text>
+              <text x="320" y="95" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="bold">8</text>
+              <!-- labels -->
+              <text x="190" y="78" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="bold">PONTE</text>
+              <text x="110" y="170" text-anchor="middle" fill="#ef4444" font-size="10">Articulação</text>
+              <text x="270" y="170" text-anchor="middle" fill="#ef4444" font-size="10">Articulação</text>
+            </svg>
+            <div class="graph-label">A aresta 4–5 é uma PONTE (vermelha tracejada). Os vértices 4 e 5 são ARTICULAÇÕES.
+              Cortando qualquer um deles, o grafo se divide.</div>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">SCAM — Conjunto de Corte de Vértices</div>
+          <div class="def-box">
+            <strong>SCAM:</strong> É o menor conjunto de vértices que você precisa remover para desconectar o grafo.<br>
+            <strong>Biconexo:</strong> Grafo que não tem nenhuma articulação. Para desconectá-lo, você precisa remover
+            pelo menos 2 vértices (SCAM ≥ 2).
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BIPARTIDO -->
+    <section class="section" id="bipartido">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <div>
+          <div class="section-title">Grafo Bipartido</div>
+          <div class="section-sub">Meninos de um lado, meninas do outro — ligações só entre grupos opostos</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">Conceito e Regra Fundamental</div>
+          <p>Um grafo é <strong>bipartido</strong> quando você consegue dividir todos os vértices em dois grupos (A e B)
+            de forma que <strong>nenhuma aresta ligue dois vértices do mesmo grupo</strong>. Todas as arestas vão de A
+            para B.</p>
+          <div class="rule-box">
+            <strong>Regra do Prof. Tenório:</strong> Um grafo é bipartido SE E SOMENTE SE todos os seus ciclos têm
+            comprimento <strong>PAR</strong> (4, 6, 8...). Se existir qualquer ciclo de tamanho ímpar (3, 5, 7...), o
+            grafo <strong>não é bipartido</strong>.
+          </div>
+          <div class="graph-container">
+            <svg width="360" height="200" viewBox="0 0 360 200">
+              <!-- grupo A (esquerda) -->
+              <rect x="20" y="20" width="100" height="160" rx="10" fill="rgba(59,130,246,0.05)"
+                stroke="rgba(59,130,246,0.3)" stroke-width="1" stroke-dasharray="5,3" />
+              <text x="70" y="14" text-anchor="middle" fill="#3b82f6" font-size="11" font-weight="bold">Grupo A</text>
+              <!-- grupo B (direita) -->
+              <rect x="240" y="20" width="100" height="160" rx="10" fill="rgba(16,185,129,0.05)"
+                stroke="rgba(16,185,129,0.3)" stroke-width="1" stroke-dasharray="5,3" />
+              <text x="290" y="14" text-anchor="middle" fill="#10b981" font-size="11" font-weight="bold">Grupo B</text>
+              <!-- arestas (A→B) -->
+              <line x1="90" y1="70" x2="250" y2="70" stroke="#6366f1" stroke-width="1.5" />
+              <line x1="90" y1="70" x2="250" y2="130" stroke="#6366f1" stroke-width="1.5" />
+              <line x1="90" y1="130" x2="250" y2="70" stroke="#6366f1" stroke-width="1.5" />
+              <line x1="90" y1="130" x2="250" y2="130" stroke="#6366f1" stroke-width="1.5" />
+              <line x1="90" y1="130" x2="250" y2="160" stroke="#6366f1" stroke-width="1.5" />
+              <!-- vértices A -->
+              <circle cx="90" cy="70" r="16" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2.5" />
+              <circle cx="90" cy="130" r="16" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2.5" />
+              <!-- vértices B -->
+              <circle cx="250" cy="70" r="16" fill="#1e2a3a" stroke="#10b981" stroke-width="2.5" />
+              <circle cx="250" cy="130" r="16" fill="#1e2a3a" stroke="#10b981" stroke-width="2.5" />
+              <circle cx="250" cy="160" r="16" fill="#1e2a3a" stroke="#10b981" stroke-width="2.5" />
+              <!-- labels -->
+              <text x="90" y="75" text-anchor="middle" fill="#3b82f6" font-size="13" font-weight="bold">1</text>
+              <text x="90" y="135" text-anchor="middle" fill="#3b82f6" font-size="13" font-weight="bold">2</text>
+              <text x="250" y="75" text-anchor="middle" fill="#10b981" font-size="13" font-weight="bold">3</text>
+              <text x="250" y="135" text-anchor="middle" fill="#10b981" font-size="13" font-weight="bold">4</text>
+              <text x="250" y="165" text-anchor="middle" fill="#10b981" font-size="13" font-weight="bold">5</text>
+            </svg>
+            <div class="graph-label">Grafo Bipartido K(2,3): Grupo A = {1,2}, Grupo B = {3,4,5}. Nenhuma aresta liga 1-2
+              ou 3-4 ou 3-5 ou 4-5.</div>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Bipartido Completo — Kₙ,ₘ</div>
+          <p>O bipartido completo é quando <strong>todo vértice de A</strong> está ligado a <strong>todo vértice de
+              B</strong>. Nada falta. A notação é K<sub>n,m</sub> onde n é o tamanho do grupo A e m é o tamanho do grupo
+            B.</p>
+          <div class="formula-box">K(n,m) → n × m arestas no total</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOCOS -->
+    <section class="section" id="blocos">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <div>
+          <div class="section-title">Blocos</div>
+          <div class="section-sub">Os pedaços indestrutíveis do grafo</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">Definição de Bloco</div>
+          <p>Um <strong>bloco</strong> é o pedaço máximo do grafo que é biconexo (não tem articulação), ou é
+            simplesmente uma aresta entre dois vértices (K₂). Blocos são os "tijolos" com que o grafo é construído.</p>
+          <div class="def-box">
+            <strong>Propriedade-chave:</strong> Se um vértice pertence a dois blocos diferentes ao mesmo tempo, esse
+            vértice é uma <strong>articulação</strong>. A árvore dos blocos é chamada de "Árvore de Blocos" ou BC-Tree.
+          </div>
+          <div class="graph-container">
+            <svg width="380" height="180" viewBox="0 0 380 180">
+              <!-- Bloco 1 (triângulo) -->
+              <line x1="50" y1="130" x2="100" y2="50" stroke="#3b82f6" stroke-width="2" />
+              <line x1="50" y1="130" x2="150" y2="130" stroke="#3b82f6" stroke-width="2" />
+              <line x1="100" y1="50" x2="150" y2="130" stroke="#3b82f6" stroke-width="2" />
+              <!-- aresta de articulação -->
+              <line x1="150" y1="130" x2="220" y2="130" stroke="#6366f1" stroke-width="2" />
+              <!-- Bloco 2 (quadrado) -->
+              <line x1="220" y1="130" x2="220" y2="60" stroke="#10b981" stroke-width="2" />
+              <line x1="220" y1="60" x2="300" y2="60" stroke="#10b981" stroke-width="2" />
+              <line x1="300" y1="60" x2="300" y2="130" stroke="#10b981" stroke-width="2" />
+              <line x1="300" y1="130" x2="220" y2="130" stroke="#10b981" stroke-width="2" />
+              <!-- Bloco 3 (K2 simples) -->
+              <line x1="300" y1="130" x2="360" y2="130" stroke="#f59e0b" stroke-width="2" />
+              <!-- vértices -->
+              <circle cx="50" cy="130" r="14" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="100" cy="50" r="14" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="150" cy="130" r="14" fill="#1e2a3a" stroke="#ef4444" stroke-width="3" />
+              <circle cx="220" cy="130" r="14" fill="#1e2a3a" stroke="#ef4444" stroke-width="3" />
+              <circle cx="220" cy="60" r="14" fill="#1e2a3a" stroke="#10b981" stroke-width="2" />
+              <circle cx="300" cy="60" r="14" fill="#1e2a3a" stroke="#10b981" stroke-width="2" />
+              <circle cx="300" cy="130" r="14" fill="#1e2a3a" stroke="#ef4444" stroke-width="3" />
+              <circle cx="360" cy="130" r="14" fill="#1e2a3a" stroke="#f59e0b" stroke-width="2" />
+              <!-- rótulos -->
+              <text x="50" y="135" text-anchor="middle" fill="#e2e8f0" font-size="11">1</text>
+              <text x="100" y="55" text-anchor="middle" fill="#e2e8f0" font-size="11">2</text>
+              <text x="150" y="135" text-anchor="middle" fill="#ef4444" font-size="11">3</text>
+              <text x="220" y="135" text-anchor="middle" fill="#ef4444" font-size="11">4</text>
+              <text x="220" y="65" text-anchor="middle" fill="#e2e8f0" font-size="11">5</text>
+              <text x="300" y="65" text-anchor="middle" fill="#e2e8f0" font-size="11">6</text>
+              <text x="300" y="135" text-anchor="middle" fill="#ef4444" font-size="11">7</text>
+              <text x="360" y="135" text-anchor="middle" fill="#e2e8f0" font-size="11">8</text>
+              <!-- blocos labels -->
+              <text x="90" y="168" text-anchor="middle" fill="#3b82f6" font-size="10">Bloco 1</text>
+              <text x="258" y="168" text-anchor="middle" fill="#10b981" font-size="10">Bloco 2</text>
+              <text x="330" y="168" text-anchor="middle" fill="#f59e0b" font-size="10">Bloco 3(K₂)</text>
+            </svg>
+            <div class="graph-label">3 blocos distintos. Vértices 3, 4 e 7 (em vermelho) são articulações — pertencem a
+              mais de um bloco.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- CADEIA -->
+    <section class="section" id="cadeia">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <div>
+          <div class="section-title">Cadeia</div>
+          <div class="section-sub">O modo do Prof. Tenório de caminhar pelo grafo</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">Cadeia vs. Caminho</div>
+          <p>Tenório usa uma terminologia própria. Para ele, uma <strong>Cadeia</strong> é a sequência de arestas
+            percorridas (pode repetir vértice). Um <strong>Caminho Simples</strong> não repete vértice.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="def-box">
+              <strong>Cadeia:</strong> Sequência de arestas onde cada aresta compartilha um vértice com a próxima. Pode
+              passar pelo mesmo vértice mais de uma vez (mas não pela mesma aresta em uma cadeia simples).
+            </div>
+            <div class="def-box">
+              <strong>Caminho:</strong> Cadeia onde nenhum vértice se repete. É mais restrito que cadeia.
+            </div>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Fecho Positivo (+) e Fecho Estrela (*)</div>
+          <div class="rule-box">
+            <strong>Fecho Positivo (+):</strong> Um ciclo (balão) dentro de uma cadeia onde a passagem por esse ciclo é
+            <strong>obrigatória</strong> pelo menos uma vez.<br><br>
+            <strong>Fecho Estrela (*):</strong> Um ciclo (balão) onde a passagem é <strong>opcional</strong> — você pode
+            ou não dar a volta.
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Concatenação (//)</div>
+          <p>Concatenar duas cadeias (C1 // C2) significa emendá-las: o último vértice de C1 é o primeiro de C2.</p>
+          <div class="warn-box">
+            <strong>Atenção — NÃO é comutativa:</strong> C1 // C2 ≠ C2 // C1. A ordem importa!<br>
+            O elemento neutro λ (lambda) é a cadeia vazia: C // λ = C.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLORAÇÃO -->
+    <section class="section" id="coloracao">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <div>
+          <div class="section-title">Coloração</div>
+          <div class="section-sub">Pintar o mapa sem usar a mesma cor em regiões vizinhas</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">Coloração de Vértices — Número Cromático χ(G)</div>
+          <p>O <strong>número cromático</strong> χ(G) é a quantidade mínima de cores necessárias para pintar todos os
+            vértices de forma que dois vértices vizinhos (ligados por aresta) nunca tenham a mesma cor.</p>
+          <div class="graph-container">
+            <svg width="300" height="200" viewBox="0 0 300 200">
+              <!-- arestas -->
+              <line x1="150" y1="40" x2="60" y2="160" stroke="#64748b" stroke-width="2" />
+              <line x1="150" y1="40" x2="240" y2="160" stroke="#64748b" stroke-width="2" />
+              <line x1="60" y1="160" x2="240" y2="160" stroke="#64748b" stroke-width="2" />
+              <line x1="150" y1="40" x2="150" y2="160" stroke="#64748b" stroke-width="2" />
+              <!-- vértices coloridos -->
+              <circle cx="150" cy="40" r="20" fill="#3b82f6" stroke="#93c5fd" stroke-width="2" />
+              <circle cx="60" cy="160" r="20" fill="#10b981" stroke="#6ee7b7" stroke-width="2" />
+              <circle cx="240" cy="160" r="20" fill="#10b981" stroke="#6ee7b7" stroke-width="2" />
+              <circle cx="150" cy="160" r="20" fill="#f59e0b" stroke="#fcd34d" stroke-width="2" />
+              <text x="150" y="45" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">Azul</text>
+              <text x="60" y="165" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">Verde</text>
+              <text x="240" y="165" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">Verde</text>
+              <text x="150" y="165" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">Amar.</text>
+            </svg>
+            <div class="graph-label">χ(G) = 3 cores. Vértices vizinhos têm cores diferentes. Os dois verdes não são
+              vizinhos entre si.</div>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Coloração de Arestas — Índice Cromático χ'(G)</div>
+          <p>Aqui você pinta as <strong>arestas</strong> (e não os vértices). A regra é: duas arestas que compartilham
+            um vértice não podem ter a mesma cor.</p>
+          <div class="rule-box">
+            <strong>Teorema de Vizing (Classes 1 e 2):</strong><br>
+            • <strong>Classe 1:</strong> χ'(G) = Δ (usa exatamente o grau máximo de cores)<br>
+            • <strong>Classe 2:</strong> χ'(G) = Δ + 1 (precisa de uma cor a mais)
+          </div>
+          <div class="def-box">
+            O Delta (Δ) é sempre o limite inferior: você nunca consegue colorir as arestas com menos de Δ cores, porque
+            num vértice de grau Δ todas as arestas que tocam nele precisam de cores distintas.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPLETO E COMPLEMENTO -->
+    <section class="section" id="completo">
+      <div class="section-header">
+        <div class="section-num">8</div>
+        <div>
+          <div class="section-title">Grafo Completo e Complemento</div>
+          <div class="section-sub">O "todo mundo se pega" e o "o que faltou"</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">Grafo Completo — Kₙ</div>
+          <p>Em um grafo completo Kₙ, <strong>todo vértice está ligado a todos os outros</strong>. Nenhuma conexão
+            falta. Com n vértices, o número de arestas é dado por:</p>
+          <div class="formula-box">M = n × (n − 1) / 2</div>
+          <div class="graph-container">
+            <svg width="300" height="200" viewBox="0 0 300 200">
+              <!-- K4 -->
+              <line x1="150" y1="30" x2="40" y2="130" stroke="#3b82f6" stroke-width="1.5" />
+              <line x1="150" y1="30" x2="260" y2="130" stroke="#3b82f6" stroke-width="1.5" />
+              <line x1="150" y1="30" x2="150" y2="170" stroke="#3b82f6" stroke-width="1.5" />
+              <line x1="40" y1="130" x2="260" y2="130" stroke="#3b82f6" stroke-width="1.5" />
+              <line x1="40" y1="130" x2="150" y2="170" stroke="#3b82f6" stroke-width="1.5" />
+              <line x1="260" y1="130" x2="150" y2="170" stroke="#3b82f6" stroke-width="1.5" />
+              <circle cx="150" cy="30" r="16" fill="#1e2a3a" stroke="#6366f1" stroke-width="2.5" />
+              <circle cx="40" cy="130" r="16" fill="#1e2a3a" stroke="#6366f1" stroke-width="2.5" />
+              <circle cx="260" cy="130" r="16" fill="#1e2a3a" stroke="#6366f1" stroke-width="2.5" />
+              <circle cx="150" cy="170" r="16" fill="#1e2a3a" stroke="#6366f1" stroke-width="2.5" />
+              <text x="150" y="35" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">1</text>
+              <text x="40" y="135" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">2</text>
+              <text x="260" y="135" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">3</text>
+              <text x="150" y="175" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">4</text>
+              <text x="150" y="190" text-anchor="middle" fill="#94a3b8" font-size="10">K₄: 4 vértices, 6 arestas</text>
+            </svg>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Complemento de um Grafo</div>
+          <p>O <strong>complemento</strong> de G (escrito G̅ ou G') é o grafo que tem os mesmos vértices de G, mas as
+            arestas são exatamente as que <em>faltavam</em> em G para ele ser completo.</p>
+          <div class="rule-box">
+            <strong>Regra de ouro:</strong> G + Complemento de G = Kₙ (grafo completo)<br>
+            Se uma aresta existe em G, ela NÃO existe no complemento. Se não existe em G, ela existe no complemento.
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Operação de Soma de Grafos</div>
+          <div class="def-box">
+            <strong>Soma (G1 + G2):</strong> Para cada vértice de G1, cria-se uma aresta para <em>todo</em> vértice de
+            G2. Os vértices e arestas originais de ambos os grafos são mantidos.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPLEXIDADE -->
+    <section class="section" id="complexidade">
+      <div class="section-header">
+        <div class="section-num">9</div>
+        <div>
+          <div class="section-title">Complexidade Algorítmica</div>
+          <div class="section-sub">Big-O: o quão rápido (ou lento) um algoritmo é</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">As Notações Principais</div>
+          <div class="complexity-grid">
+            <div class="complexity-card">
+              <div class="complexity-notation" style="color:#10b981;">O(1)</div>
+              <div class="complexity-name">Constante</div>
+              <div class="complexity-example">Acesso direto a índice. Imediato. O melhor possível.</div>
+            </div>
+            <div class="complexity-card">
+              <div class="complexity-notation" style="color:#3b82f6;">O(log N)</div>
+              <div class="complexity-name">Logarítmica</div>
+              <div class="complexity-example">Busca binária. Divide o problema pela metade a cada passo.</div>
+            </div>
+            <div class="complexity-card">
+              <div class="complexity-notation" style="color:#6366f1;">O(N)</div>
+              <div class="complexity-name">Linear</div>
+              <div class="complexity-example">Um laço FOR percorrendo tudo. Cresce igual ao tamanho da entrada.</div>
+            </div>
+            <div class="complexity-card">
+              <div class="complexity-notation" style="color:#f59e0b;">O(N²)</div>
+              <div class="complexity-name">Quadrática</div>
+              <div class="complexity-example">FOR dentro de FOR. Bem mais lento.</div>
+            </div>
+            <div class="complexity-card">
+              <div class="complexity-notation" style="color:#ef4444;">O(2ⁿ)</div>
+              <div class="complexity-name">Exponencial</div>
+              <div class="complexity-example">Força bruta pesada. Trava o computador rapidamente.</div>
+            </div>
+            <div class="complexity-card">
+              <div class="complexity-notation" style="color:#dc2626;">O(N!)</div>
+              <div class="complexity-name">Fatorial</div>
+              <div class="complexity-example">O pior. Inviável mesmo para N pequeno.</div>
+            </div>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Omega, Theta e Big-O — As Três Notações</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+            <div class="def-box"><strong>O(N) — Big-O:</strong> O pior caso possível. Limite superior.</div>
+            <div class="def-box"><strong>Ω(N) — Omega:</strong> O melhor caso possível. Limite inferior.</div>
+            <div class="def-box"><strong>Θ(N) — Theta:</strong> O caso médio. O algoritmo sempre cresce assim.</div>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Classe P vs. Classe NP</div>
+          <div class="rule-box">
+            <strong>Classe P:</strong> Problemas que têm solução eficiente (polinomial). Dá para resolver rápido.<br>
+            <strong>Classe NP:</strong> Problemas onde verificar uma resposta é rápido, mas encontrar a resposta pode
+            ser muito lento.<br>
+            <strong>NP-Completo:</strong> Os problemas mais difíceis da classe NP.
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Regra de Simplificação do Big-O</div>
+          <div class="warn-box">
+            Quando você soma complexidades, <strong>o maior termo vence</strong> e os menores são descartados:<br>
+            O(1) + O(N) + O(N²) = <strong>O(N²)</strong><br>
+            Constantes numéricas também são descartadas: O(3N) = <strong>O(N)</strong>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Como Calcular a Complexidade na Prática (Passo a Passo)</div>
+          <p>A ideia é simples: <strong>conte quantas vezes o bloco principal de código executa</strong> em função do tamanho da entrada N. Cada laço FOR aninhado multiplica a complexidade.</p>
+          <div class="def-box"><strong>Regra 1 — Operação simples:</strong> O(1) — não importa o tamanho de N, a operação sempre leva o mesmo tempo.<br>
+          <code style="color:#10b981;font-family:'JetBrains Mono',monospace;">x = 5 &nbsp;→&nbsp; O(1)</code></div>
+          <div class="def-box"><strong>Regra 2 — Um laço FOR de 1 até N:</strong> O(N)<br>
+          <pre style="color:#10b981;font-family:'JetBrains Mono',monospace;font-size:0.85rem;margin-top:8px;white-space:pre-wrap;">para i de 1 até N:
+    faça algo simples   → executa N vezes → O(N)</pre></div>
+          <div class="def-box"><strong>Regra 3 — FOR dentro de FOR (N dentro de N):</strong> O(N²)<br>
+          <pre style="color:#f59e0b;font-family:'JetBrains Mono',monospace;font-size:0.85rem;margin-top:8px;white-space:pre-wrap;">para i de 1 até N:        ← N vezes
+    para j de 1 até N:    ← N vezes cada iteração
+        faça algo         → N × N = N² → O(N²)</pre></div>
+          <div class="def-box"><strong>Regra 4 — Três FORs aninhados:</strong> O(N³)<br>
+          <pre style="color:#ef4444;font-family:'JetBrains Mono',monospace;font-size:0.85rem;margin-top:8px;white-space:pre-wrap;">para i de 1 até N:
+    para j de 1 até N:
+        para k de 1 até N:
+            faça algo     → N × N × N = N³ → O(N³)</pre></div>
+          <div class="def-box"><strong>Regra 5 — Quatro FORs aninhados:</strong> O(N⁴)<br>
+          <pre style="color:#dc2626;font-family:'JetBrains Mono',monospace;font-size:0.85rem;margin-top:8px;white-space:pre-wrap;">para i de 1 até N:
+    para j de 1 até N:
+        para k de 1 até N:
+            para l de 1 até N:
+                faça algo → N⁴ → O(N⁴) [muito lento!]</pre></div>
+          <div class="warn-box"><strong>Padrão geral — memorize:</strong><br>
+          1 FOR = O(N) &nbsp;|&nbsp; 2 FORs = O(N²) &nbsp;|&nbsp; 3 FORs = O(N³) &nbsp;|&nbsp; 4 FORs = O(N⁴)<br><br>
+          <strong>Blocos sequenciais:</strong> O(N) + O(N²) = O(N²) — o maior vence.<br>
+          <strong>Constantes somem:</strong> O(3N) = O(N), O(5N²) = O(N²).</div>
+          <div style="overflow-x:auto;margin-top:16px;">
+            <table class="matrix-table" style="width:100%;min-width:480px;">
+              <tr><th>Complexidade</th><th>N=10</th><th>N=100</th><th>N=1.000</th><th>N=10.000</th></tr>
+              <tr><td style="color:#10b981;font-weight:700;">O(1)</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+              <tr><td style="color:#3b82f6;font-weight:700;">O(log N)</td><td>3</td><td>7</td><td>10</td><td>13</td></tr>
+              <tr><td style="color:#6366f1;font-weight:700;">O(N)</td><td>10</td><td>100</td><td>1.000</td><td>10.000</td></tr>
+              <tr><td style="color:#8b5cf6;font-weight:700;">O(N²)</td><td>100</td><td>10.000</td><td>1 milhão</td><td>100 milhões</td></tr>
+              <tr><td style="color:#f59e0b;font-weight:700;">O(N³)</td><td>1.000</td><td>1.000.000</td><td>1 bilhão</td><td>1 trilhão</td></tr>
+              <tr><td style="color:#ef4444;font-weight:700;">O(N⁴)</td><td>10.000</td><td>100 milhões</td><td>1 trilhão</td><td>absurdo</td></tr>
+              <tr><td style="color:#dc2626;font-weight:700;">O(N!)</td><td>3.628.800</td><td>absurdo</td><td>inviável</td><td>impossível</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- DELTA E CÚBICO -->
+    <section class="section" id="delta">
+      <div class="section-header">
+        <div class="section-num">10</div>
+        <div>
+          <div class="section-title">Delta (Δ) e Grafo Cúbico</div>
+          <div class="section-sub">O chefão dos graus e os vértices trigêmeos</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">Delta — O Grau Máximo</div>
+          <p>O <strong>Delta (Δ)</strong> de um grafo é simplesmente o grau do vértice mais "popular" — aquele que tem
+            mais conexões.</p>
+          <div class="def-box">
+            <strong>Δ(G) = max{grau(v) : v ∈ V(G)}</strong><br>
+            Exemplo: se os vértices têm graus 1, 2, 3, 4, então Δ = 4.
+          </div>
+          <div class="rule-box">
+            <strong>δ (delta minúsculo)</strong> = grau <em>mínimo</em> (o vértice menos popular).<br>
+            <strong>Δ (delta maiúsculo)</strong> = grau <em>máximo</em> (o vértice mais popular).
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Grafo Cúbico (3-Regular)</div>
+          <p>Um grafo <strong>cúbico</strong> é aquele onde <em>todos</em> os vértices têm exatamente grau 3. É um grafo
+            regular de grau 3, então Δ = δ = 3.</p>
+          <div class="graph-container">
+            <svg width="300" height="200" viewBox="0 0 300 200">
+              <!-- K4 é cúbico: cada vértice tem grau 3 -->
+              <line x1="150" y1="30" x2="40" y2="130" stroke="#8b5cf6" stroke-width="2" />
+              <line x1="150" y1="30" x2="260" y2="130" stroke="#8b5cf6" stroke-width="2" />
+              <line x1="150" y1="30" x2="150" y2="170" stroke="#8b5cf6" stroke-width="2" />
+              <line x1="40" y1="130" x2="260" y2="130" stroke="#8b5cf6" stroke-width="2" />
+              <line x1="40" y1="130" x2="150" y2="170" stroke="#8b5cf6" stroke-width="2" />
+              <line x1="260" y1="130" x2="150" y2="170" stroke="#8b5cf6" stroke-width="2" />
+              <circle cx="150" cy="30" r="18" fill="#1e2a3a" stroke="#8b5cf6" stroke-width="2.5" />
+              <circle cx="40" cy="130" r="18" fill="#1e2a3a" stroke="#8b5cf6" stroke-width="2.5" />
+              <circle cx="260" cy="130" r="18" fill="#1e2a3a" stroke="#8b5cf6" stroke-width="2.5" />
+              <circle cx="150" cy="170" r="18" fill="#1e2a3a" stroke="#8b5cf6" stroke-width="2.5" />
+              <text x="150" y="35" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">1</text>
+              <text x="40" y="135" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">2</text>
+              <text x="260" y="135" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">3</text>
+              <text x="150" y="175" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="bold">4</text>
+              <text x="180" y="18" fill="#8b5cf6" font-size="10">grau=3</text>
+              <text x="14" y="120" fill="#8b5cf6" font-size="10">grau=3</text>
+              <text x="263" y="120" fill="#8b5cf6" font-size="10">grau=3</text>
+              <text x="155" y="190" fill="#8b5cf6" font-size="10">grau=3</text>
+            </svg>
+            <div class="graph-label">K₄ é cúbico: todos os 4 vértices têm grau 3. Δ = δ = 3.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ELO E POSTO -->
+    <section class="section" id="elo">
+      <div class="section-header">
+        <div class="section-num">11</div>
+        <div>
+          <div class="section-title">ELO e Posto</div>
+          <div class="section-sub">As arestas extras e a conta simples que nunca muda</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">Árvore Geradora e ELOs</div>
+          <p>Qualquer grafo conexo contém uma <strong>Árvore Geradora</strong>: um subgrafo que conecta todos os
+            vértices sem ciclos (como uma árvore, sem "anéis"). As arestas que <em>não</em> fazem parte da árvore
+            geradora se chamam <strong>ELOs</strong>.</p>
+          <div class="def-box">
+            <strong>ELO:</strong> Uma aresta do grafo que não está na árvore geradora. Cada ELO que você adiciona à
+            árvore cria exatamente um ciclo.
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Posto (Número Ciclomático)</div>
+          <p>O <strong>Posto</strong> é a quantidade de ELOs — ou seja, quantos ciclos "independentes" o grafo tem.</p>
+          <div class="formula-box">Posto = M − N + 1</div>
+          <div class="rule-box">
+            Onde M = número de arestas e N = número de vértices (grafo conexo).<br>
+            <strong>Exemplo:</strong> Grafo com 6 arestas e 4 vértices → Posto = 6 − 4 + 1 = <strong>3</strong>
+          </div>
+          <div class="warn-box">
+            <strong>Para grafos desconexos:</strong> Posto = M − N + C, onde C é o número de componentes conexos.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EMPARELHAMENTO -->
+    <section class="section" id="empar">
+      <div class="section-header">
+        <div class="section-num">12</div>
+        <div>
+          <div class="section-title">Emparelhamento</div>
+          <div class="section-sub">O casamento perfeito: nenhum vértice pode ter dois parceiros</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">O que é Emparelhamento</div>
+          <p>Um <strong>emparelhamento</strong> M é um conjunto de arestas onde cada vértice aparece em no máximo uma
+            aresta. Como um casamento: ninguém pode ter dois parceiros.</p>
+          <div class="graph-container">
+            <svg width="360" height="160" viewBox="0 0 360 160">
+              <!-- arestas normais -->
+              <line x1="60" y1="80" x2="130" y2="40" stroke="#334155" stroke-width="1.5" />
+              <line x1="130" y1="40" x2="200" y2="80" stroke="#334155" stroke-width="1.5" />
+              <line x1="200" y1="80" x2="270" y2="40" stroke="#334155" stroke-width="1.5" />
+              <line x1="270" y1="40" x2="310" y2="80" stroke="#334155" stroke-width="1.5" />
+              <line x1="60" y1="80" x2="130" y2="120" stroke="#334155" stroke-width="1.5" />
+              <line x1="200" y1="80" x2="130" y2="120" stroke="#334155" stroke-width="1.5" />
+              <!-- arestas do emparelhamento (destacadas) -->
+              <line x1="60" y1="80" x2="130" y2="40" stroke="#10b981" stroke-width="3" />
+              <line x1="200" y1="80" x2="270" y2="40" stroke="#10b981" stroke-width="3" />
+              <!-- vértices -->
+              <circle cx="60" cy="80" r="14" fill="#1e2a3a" stroke="#10b981" stroke-width="2.5" />
+              <circle cx="130" cy="40" r="14" fill="#1e2a3a" stroke="#10b981" stroke-width="2.5" />
+              <circle cx="200" cy="80" r="14" fill="#1e2a3a" stroke="#10b981" stroke-width="2.5" />
+              <circle cx="270" cy="40" r="14" fill="#1e2a3a" stroke="#10b981" stroke-width="2.5" />
+              <circle cx="310" cy="80" r="14" fill="#1e2a3a" stroke="#475569" stroke-width="2" />
+              <circle cx="130" cy="120" r="14" fill="#1e2a3a" stroke="#475569" stroke-width="2" />
+              <text x="60" y="85" text-anchor="middle" fill="#e2e8f0" font-size="11">1</text>
+              <text x="130" y="45" text-anchor="middle" fill="#e2e8f0" font-size="11">2</text>
+              <text x="200" y="85" text-anchor="middle" fill="#e2e8f0" font-size="11">3</text>
+              <text x="270" y="45" text-anchor="middle" fill="#e2e8f0" font-size="11">4</text>
+              <text x="310" y="85" text-anchor="middle" fill="#94a3b8" font-size="11">5</text>
+              <text x="130" y="125" text-anchor="middle" fill="#94a3b8" font-size="11">6</text>
+              <text x="180" y="150" text-anchor="middle" fill="#10b981" font-size="10">Emparelhamento M = {(1,2), (3,4)}
+                — tamanho 2</text>
+            </svg>
+            <div class="graph-label">As arestas verdes formam o emparelhamento. Vértices 5 e 6 estão expostos (sem par).
+            </div>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Termos Importantes do Emparelhamento</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="def-box"><strong>Vértice Saturado:</strong> Faz parte de alguma aresta do emparelhamento.</div>
+            <div class="def-box"><strong>Vértice Exposto:</strong> Não faz parte de nenhuma aresta do emparelhamento.
+            </div>
+            <div class="def-box"><strong>Emparelhamento Máximo:</strong> O maior emparelhamento possível no grafo.</div>
+            <div class="def-box"><strong>Emparelhamento Perfeito:</strong> Todos os vértices estão saturados (sem
+              vértice exposto).</div>
+            <div class="def-box"><strong>Caminho Alternante:</strong> Caminho que alterna entre arestas do
+              emparelhamento e arestas fora dele.</div>
+            <div class="def-box"><strong>Caminho Aumentante:</strong> Caminho alternante que começa E termina em
+              vértices expostos. Encontrá-lo aumenta o emparelhamento.</div>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Broto (Blossom) — Terminologia do Prof. Tenório</div>
+          <div class="warn-box">
+            <strong>Broto:</strong> Um ciclo M-alternante de comprimento <strong>ímpar</strong>. A aresta que "fecha" o
+            ciclo e leva ao broto é chamada de <strong>Talo</strong>.<br>
+            O algoritmo de Edmonds trata brotos para encontrar emparelhamentos máximos em grafos gerais.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FONTE E SUMIDOURO -->
+    <section class="section" id="fonte">
+      <div class="section-header">
+        <div class="section-num">13</div>
+        <div>
+          <div class="section-title">Fonte e Sumidouro</div>
+          <div class="section-sub">A nascente e o ralo — conceitos exclusivos de dígrafos</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">Definições</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="rule-box">
+              <strong>Fonte (Source):</strong><br>
+              Vértice de onde <em>só saem</em> setas. Grau de entrada = 0. Ninguém aponta para ele, mas ele aponta para
+              outros.
+            </div>
+            <div class="rule-box">
+              <strong>Sumidouro (Sink):</strong><br>
+              Vértice onde as setas <em>só chegam</em>. Grau de saída = 0. Todos apontam para ele, mas ele não aponta
+              para ninguém.
+            </div>
+          </div>
+          <div class="graph-container">
+            <svg width="340" height="160" viewBox="0 0 340 160">
+              <defs>
+                <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L8,3 z" fill="#6366f1" />
+                </marker>
+              </defs>
+              <!-- setas saindo da fonte -->
+              <line x1="74" y1="80" x2="155" y2="45" stroke="#6366f1" stroke-width="2" marker-end="url(#arr2)" />
+              <line x1="74" y1="80" x2="155" y2="115" stroke="#6366f1" stroke-width="2" marker-end="url(#arr2)" />
+              <!-- setas indo ao sumidouro -->
+              <line x1="175" y1="40" x2="256" y2="75" stroke="#6366f1" stroke-width="2" marker-end="url(#arr2)" />
+              <line x1="175" y1="120" x2="256" y2="85" stroke="#6366f1" stroke-width="2" marker-end="url(#arr2)" />
+              <!-- vértices -->
+              <circle cx="60" cy="80" r="20" fill="#1e2a3a" stroke="#10b981" stroke-width="3" />
+              <circle cx="170" cy="40" r="16" fill="#1e2a3a" stroke="#6366f1" stroke-width="2" />
+              <circle cx="170" cy="120" r="16" fill="#1e2a3a" stroke="#6366f1" stroke-width="2" />
+              <circle cx="270" cy="80" r="20" fill="#1e2a3a" stroke="#ef4444" stroke-width="3" />
+              <!-- labels -->
+              <text x="60" y="85" text-anchor="middle" fill="#10b981" font-size="12" font-weight="bold">F</text>
+              <text x="170" y="45" text-anchor="middle" fill="#e2e8f0" font-size="12">A</text>
+              <text x="170" y="125" text-anchor="middle" fill="#e2e8f0" font-size="12">B</text>
+              <text x="270" y="85" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="bold">S</text>
+              <text x="60" y="108" text-anchor="middle" fill="#10b981" font-size="9">FONTE</text>
+              <text x="60" y="118" text-anchor="middle" fill="#94a3b8" font-size="9">gr.entrada=0</text>
+              <text x="270" y="108" text-anchor="middle" fill="#ef4444" font-size="9">SUMIDOURO</text>
+              <text x="270" y="118" text-anchor="middle" fill="#94a3b8" font-size="9">gr.saída=0</text>
+            </svg>
+            <div class="graph-label">F é a Fonte (grau de entrada = 0). S é o Sumidouro (grau de saída = 0).</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ONORÍFICO -->
+    <section class="section" id="onorifico">
+      <div class="section-header">
+        <div class="section-num">14</div>
+        <div>
+          <div class="section-title">Grafo Onorífico</div>
+          <div class="section-sub">O clube exclusivo: N ≤ 8, M = 7, dígrafo enraizado com caminho euleriano</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">A Definição do Tenório</div>
+          <p>Para o Prof. Tenório, um <strong>Dígrafo Onorífico</strong> precisa cumprir <em>todas</em> as condições
+            abaixo ao mesmo tempo:</p>
+          <div class="def-box">
+            <strong>1.</strong> É um <strong>dígrafo</strong> (grafo direcionado com setas).<br>
+            <strong>2.</strong> Tem no máximo 8 vértices: <strong>N ≤ 8</strong>.<br>
+            <strong>3.</strong> Tem exatamente 7 arestas: <strong>M = 7</strong>.<br>
+            <strong>4.</strong> É um dígrafo <strong>enraizado</strong> (existe uma raiz, um vértice especial de
+            início).<br>
+            <strong>5.</strong> Existe um <strong>caminho euleriano</strong> a partir dessa raiz (caminho que percorre
+            cada aresta exatamente uma vez).
+          </div>
+          <div class="warn-box">
+            <strong>Se faltar qualquer uma dessas 5 condições, não é Onorífico!</strong> Preste atenção especial ao M =
+            7 exato e ao N ≤ 8.
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Caminho Euleriano — Revisão Rápida</div>
+          <div class="rule-box">
+            Um caminho euleriano percorre <em>todas</em> as arestas do grafo exatamente uma vez.<br>
+            Em dígrafos, a condição é: para todos os vértices intermediários, grau de entrada = grau de saída. Para a
+            raiz, grau de saída = grau de entrada + 1.
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- REDUÇÃO TRANSITIVA -->
+    <section class="section" id="reducao">
+      <div class="section-header">
+        <div class="section-num">15</div>
+        <div>
+          <div class="section-title">Redução Transitiva</div>
+          <div class="section-sub">Cortar o atalho inútil — sem perder nenhuma conexão</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">O Conceito</div>
+          <p>Se no dígrafo existe uma seta de A para B e outra de B para C, então a seta direta de A para C é
+            <strong>redundante</strong> — você já consegue ir de A a C passando por B. A Redução Transitiva remove essas
+            setas redundantes sem perder a "alcançabilidade" do grafo.
+          </p>
+          <div class="graph-container">
+            <svg width="400" height="160" viewBox="0 0 400 160">
+              <defs>
+                <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L8,3 z" fill="#3b82f6" />
+                </marker>
+                <marker id="arr3r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L8,3 z" fill="#ef4444" />
+                </marker>
+              </defs>
+              <!-- ANTES -->
+              <text x="70" y="18" text-anchor="middle" fill="#94a3b8" font-size="11">Antes da Redução</text>
+              <line x1="30" y1="80" x2="68" y2="80" stroke="#3b82f6" stroke-width="2" marker-end="url(#arr3)" />
+              <line x1="90" y1="80" x2="128" y2="80" stroke="#3b82f6" stroke-width="2" marker-end="url(#arr3)" />
+              <!-- seta redundante (curva) -->
+              <path d="M 30 68 Q 80 30 130 68" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,3"
+                marker-end="url(#arr3r)" />
+              <text x="80" y="26" text-anchor="middle" fill="#ef4444" font-size="10">redundante</text>
+              <circle cx="20" cy="80" r="12" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="80" cy="80" r="12" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="140" cy="80" r="12" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <text x="20" y="84" text-anchor="middle" fill="#e2e8f0" font-size="11">A</text>
+              <text x="80" y="84" text-anchor="middle" fill="#e2e8f0" font-size="11">B</text>
+              <text x="140" y="84" text-anchor="middle" fill="#e2e8f0" font-size="11">C</text>
+
+              <!-- seta indicando transformação -->
+              <text x="200" y="84" text-anchor="middle" fill="#f59e0b" font-size="20">→</text>
+
+              <!-- DEPOIS -->
+              <text x="320" y="18" text-anchor="middle" fill="#94a3b8" font-size="11">Após a Redução</text>
+              <line x1="256" y1="80" x2="294" y2="80" stroke="#10b981" stroke-width="2" marker-end="url(#arr3)" />
+              <line x1="316" y1="80" x2="354" y2="80" stroke="#10b981" stroke-width="2" marker-end="url(#arr3)" />
+              <circle cx="246" cy="80" r="12" fill="#1e2a3a" stroke="#10b981" stroke-width="2" />
+              <circle cx="306" cy="80" r="12" fill="#1e2a3a" stroke="#10b981" stroke-width="2" />
+              <circle cx="366" cy="80" r="12" fill="#1e2a3a" stroke="#10b981" stroke-width="2" />
+              <text x="246" y="84" text-anchor="middle" fill="#e2e8f0" font-size="11">A</text>
+              <text x="306" y="84" text-anchor="middle" fill="#e2e8f0" font-size="11">B</text>
+              <text x="366" y="84" text-anchor="middle" fill="#e2e8f0" font-size="11">C</text>
+              <text x="306" y="120" text-anchor="middle" fill="#10b981" font-size="10">Seta A→C removida</text>
+            </svg>
+          </div>
+          <div class="rule-box">
+            <strong>Diagrama de Hasse:</strong> O resultado visual de uma redução transitiva aplicada a uma relação de
+            ordem parcial. É o que você vê em hierarquias e árvores de dependência.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCIE E SCEE -->
+    <section class="section" id="scie">
+      <div class="section-header">
+        <div class="section-num">16</div>
+        <div>
+          <div class="section-title">SCIE e SCEE (Núcleo)</div>
+          <div class="section-sub">O assunto mais chato — mas que cai na prova. Entenda de uma vez por todas.</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">SCIE — Conjunto Independente (Internamente Estável)</div>
+          <p>Um grupo de vértices onde <strong>nenhum se conecta ao outro</strong>. São "anti-sociais": estão dentro do
+            mesmo grupo mas não trocam nenhuma aresta entre si.</p>
+          <div class="def-box">
+            <strong>SCIE:</strong> Para todo par de vértices u, v pertencentes ao conjunto S, não existe aresta entre u
+            e v.
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">SCEE — Conjunto Dominante (Externamente Estável)</div>
+          <p>Um grupo onde <strong>todo vértice de fora</strong> do grupo tem ao menos uma aresta apontando para dentro
+            do grupo. É o grupo "famoso" que todo mundo conhece.</p>
+          <div class="def-box">
+            <strong>SCEE:</strong> Para todo vértice w fora do conjunto S, existe pelo menos um vértice v dentro de S
+            tal que existe aresta (w → v).
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Núcleo = SCIE ∩ SCEE</div>
+          <div class="rule-box">
+            <strong>Núcleo:</strong> Um subconjunto que é ao mesmo tempo SCIE <em>e</em> SCEE. É o "grupo ideal" do
+            dígrafo.<br>
+            Se um dígrafo tem um núcleo, ele é <strong>único</strong>.
+          </div>
+          <div class="graph-container">
+            <svg width="360" height="200" viewBox="0 0 360 200">
+              <defs>
+                <marker id="arr4" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L7,3 z" fill="#6366f1" />
+                </marker>
+              </defs>
+              <!-- vértices fora do núcleo -->
+              <circle cx="80" cy="60" r="16" fill="#1e2a3a" stroke="#6366f1" stroke-width="2" />
+              <circle cx="80" cy="140" r="16" fill="#1e2a3a" stroke="#6366f1" stroke-width="2" />
+              <circle cx="180" cy="100" r="16" fill="#1e2a3a" stroke="#6366f1" stroke-width="2" />
+              <!-- núcleo destacado -->
+              <ellipse cx="283" cy="100" rx="60" ry="70" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.4)"
+                stroke-width="1.5" stroke-dasharray="6,3" />
+              <text x="283" y="180" text-anchor="middle" fill="#10b981" font-size="10">NÚCLEO (SCIE+SCEE)</text>
+              <circle cx="260" cy="70" r="16" fill="#1e2a3a" stroke="#10b981" stroke-width="2.5" />
+              <circle cx="310" cy="130" r="16" fill="#1e2a3a" stroke="#10b981" stroke-width="2.5" />
+              <!-- setas -->
+              <line x1="94" y1="64" x2="244" y2="73" stroke="#6366f1" stroke-width="1.5" marker-end="url(#arr4)" />
+              <line x1="94" y1="138" x2="244" y2="78" stroke="#6366f1" stroke-width="1.5" marker-end="url(#arr4)" />
+              <line x1="194" y1="96" x2="294" y2="124" stroke="#6366f1" stroke-width="1.5" marker-end="url(#arr4)" />
+              <!-- labels -->
+              <text x="80" y="65" text-anchor="middle" fill="#e2e8f0" font-size="12">A</text>
+              <text x="80" y="145" text-anchor="middle" fill="#e2e8f0" font-size="12">B</text>
+              <text x="180" y="105" text-anchor="middle" fill="#e2e8f0" font-size="12">C</text>
+              <text x="260" y="75" text-anchor="middle" fill="#10b981" font-size="12">D</text>
+              <text x="310" y="135" text-anchor="middle" fill="#10b981" font-size="12">E</text>
+            </svg>
+            <div class="graph-label">{D, E} é o Núcleo: não há aresta entre D e E (SCIE) e todo vértice de fora aponta
+              para D ou E (SCEE).</div>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Grafo Frágil</div>
+          <div class="warn-box">
+            <strong>Grafo Frágil:</strong> Quando o SCIE de um grafo é também um SCAM (conjunto de corte). Ou seja, o
+            grupo independente, se removido, desconecta o grafo.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRIANGULAÇÃO -->
+    <section class="section" id="triangulacao">
+      <div class="section-header">
+        <div class="section-num">17</div>
+        <div>
+          <div class="section-title">Triangulação</div>
+          <div class="section-sub">Dividir tudo em triângulos — como uma placa de Doritos infinita</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="topic">
+          <div class="topic-title">Grafo Planar Triangulado</div>
+          <p>Uma <strong>triangulação</strong> é um grafo planar (desenhado sem cruzamento de arestas) onde
+            <em>todas</em> as faces internas são triângulos (3 lados). A face externa (a área infinita ao redor do
+            grafo) pode ter qualquer forma.
+          </p>
+          <div class="rule-box">
+            <strong>Fórmula de Euler para grafos planares:</strong><br>
+            V − E + F = 2 (onde V = vértices, E = arestas, F = faces incluindo a externa)
+          </div>
+          <div class="graph-container">
+            <svg width="300" height="220" viewBox="0 0 300 220">
+              <!-- triângulação: faces internas todas são triângulos -->
+              <polygon points="150,20 30,180 270,180" fill="rgba(59,130,246,0.04)" stroke="#3b82f6" stroke-width="2" />
+              <line x1="150" y1="20" x2="150" y2="180" stroke="#6366f1" stroke-width="1.5" />
+              <line x1="90" y1="100" x2="210" y2="100" stroke="#6366f1" stroke-width="1.5" />
+              <line x1="30" y1="180" x2="210" y2="100" stroke="#3b82f6" stroke-width="1.5" />
+              <line x1="270" y1="180" x2="90" y2="100" stroke="#3b82f6" stroke-width="1.5" />
+              <!-- faces coloridas -->
+              <text x="150" y="85" text-anchor="middle" fill="#3b82f6" font-size="10">△</text>
+              <text x="90" y="148" text-anchor="middle" fill="#3b82f6" font-size="10">△</text>
+              <text x="210" y="148" text-anchor="middle" fill="#3b82f6" font-size="10">△</text>
+              <text x="150" y="148" text-anchor="middle" fill="#6366f1" font-size="10">△</text>
+              <!-- vértices -->
+              <circle cx="150" cy="20" r="14" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="30" cy="180" r="14" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="270" cy="180" r="14" fill="#1e2a3a" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="150" cy="180" r="14" fill="#1e2a3a" stroke="#6366f1" stroke-width="2" />
+              <circle cx="90" cy="100" r="14" fill="#1e2a3a" stroke="#6366f1" stroke-width="2" />
+              <circle cx="210" cy="100" r="14" fill="#1e2a3a" stroke="#6366f1" stroke-width="2" />
+              <text x="150" y="25" text-anchor="middle" fill="#e2e8f0" font-size="11">1</text>
+              <text x="30" y="185" text-anchor="middle" fill="#e2e8f0" font-size="11">2</text>
+              <text x="270" y="185" text-anchor="middle" fill="#e2e8f0" font-size="11">3</text>
+              <text x="150" y="185" text-anchor="middle" fill="#e2e8f0" font-size="11">4</text>
+              <text x="90" y="105" text-anchor="middle" fill="#e2e8f0" font-size="11">5</text>
+              <text x="210" y="105" text-anchor="middle" fill="#e2e8f0" font-size="11">6</text>
+              <text x="150" y="210" text-anchor="middle" fill="#94a3b8" font-size="10">Todas as faces internas são
+                triângulos ✓</text>
+            </svg>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-title">Conceitos Especiais da Triangulação</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="def-box">
+              <strong>Cápsula:</strong> Uma triangulação onde a quantidade de vértices internos com grau 3 é maior ou
+              igual à quantidade de vértices de borda com grau 3.
+            </div>
+            <div class="def-box">
+              <strong>Triângulo Separador:</strong> Um triângulo dentro da triangulação que "esconde" outros vértices
+              dentro dele — ele não é uma face livre, tem conteúdo dentro.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ===== QUESTÕES ===== -->
+    <div class="questions-section" id="questoes">
+      <div class="q-divider"><span>PARTE 3 — 50 QUESTÕES COMENTADAS</span></div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:30px;flex-wrap:wrap;">
+        <div
+          style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.3);border-radius:12px;padding:20px;text-align:center;">
+          <div style="font-size:2rem;font-weight:800;color:#6366f1;">20</div>
+          <div style="color:#94a3b8;font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;">Questões Fechadas
+          </div>
+          <div style="color:#64748b;font-size:0.78rem;margin-top:4px;">Múltipla escolha com gabarito</div>
+        </div>
+        <div
+          style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.3);border-radius:12px;padding:20px;text-align:center;">
+          <div style="font-size:2rem;font-weight:800;color:#10b981;">30</div>
+          <div style="color:#94a3b8;font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;">Questões Abertas
+          </div>
+          <div style="color:#64748b;font-size:0.78rem;margin-top:4px;">Resposta comentada e desenvolvida</div>
+        </div>
+      </div>
+
+      <div class="q-divider"><span>A — QUESTÕES FECHADAS (Múltipla Escolha)</span></div>
+      <div class="quiz-score-bar">
+        <div>
+          <div class="score-num" id="score-num">0/0</div>
+          <div class="score-label">Acertos</div>
+        </div>
+        <div class="score-bar-wrap">
+          <div class="score-bar-bg"><div class="score-bar-fill" id="score-fill" style="width:0%"></div></div>
+          <div style="font-size:0.78rem;color:var(--text3);margin-top:6px;" id="score-label">0 de 20 respondidas</div>
+        </div>
+        <button class="quiz-reset-btn" onclick="resetQuiz()">↺ Reiniciar Quiz</button>
+      </div>
+
+      <!-- Q1 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">1</div>
+          <div class="q-text">Em um grafo completo Kₙ, qual afirmação descreve corretamente as conexões entre seus
+            vértices?</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option correct">
+            <div class="option-letter">a</div> Todo vértice possui uma aresta ligando-o a absolutamente todos os outros
+            vértices do grafo.
+          </div>
+          <div class="option">
+            <div class="option-letter">b</div> Apenas metade dos vértices estão conectados entre si.
+          </div>
+          <div class="option">
+            <div class="option-letter">c</div> Nenhum vértice possui conexão com outro.
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> As ligações existem apenas entre pares de vértices consecutivos.
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: A</div>
+          <div class="answer-box">No grafo completo Kₙ, cada vértice possui exatamente n−1 arestas, uma para cada outro
+            vértice do grafo. O número total de arestas é n×(n−1)/2. Por exemplo, K₄ tem 4×3/2 = 6 arestas.</div>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">2</div>
+          <div class="q-text">Qual é a fórmula correta para calcular o Posto (número ciclomático) de um grafo conexo?
+          </div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option">
+            <div class="option-letter">a</div> N + M − 2
+          </div>
+          <div class="option correct">
+            <div class="option-letter">b</div> M − N + 1
+          </div>
+          <div class="option">
+            <div class="option-letter">c</div> N − M + 1
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> 3N − 6
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: B</div>
+          <div class="answer-box">O Posto = M − N + 1, onde M = número de arestas e N = número de vértices. Representa
+            quantas arestas extras (ELOs) existem além de uma árvore geradora. Exemplo: grafo com 6 arestas e 4 vértices
+            → Posto = 6 − 4 + 1 = 3.</div>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">3</div>
+          <div class="q-text">Segundo o Prof. Tenório, o que é um "Broto" no contexto de emparelhamento?</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option">
+            <div class="option-letter">a</div> Um vértice com grau igual a 1.
+          </div>
+          <div class="option">
+            <div class="option-letter">b</div> Um ciclo alternante de comprimento par.
+          </div>
+          <div class="option">
+            <div class="option-letter">c</div> Um caminho de custo máximo no grafo.
+          </div>
+          <div class="option correct">
+            <div class="option-letter">d</div> Um ciclo M-alternante de comprimento ímpar.
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: D</div>
+          <div class="answer-box">O Broto (Blossom) é um ciclo alternante (que alterna entre arestas pertencentes e não
+            pertencentes ao emparelhamento M) que possui comprimento ímpar (3, 5, 7... arestas). A aresta que "entra" no
+            broto se chama Talo. O algoritmo de Edmonds contrai brotos para encontrar emparelhamentos máximos.</div>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">4</div>
+          <div class="q-text">O que define um "Grafo Cúbico"?</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option">
+            <div class="option-letter">a</div> Um grafo desenhado em formato de cubo tridimensional.
+          </div>
+          <div class="option">
+            <div class="option-letter">b</div> Um grafo com exatamente 3 arestas no total.
+          </div>
+          <div class="option correct">
+            <div class="option-letter">c</div> Um grafo regular onde todos os vértices possuem grau exatamente igual a
+            3.
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> Um grafo onde o Delta (Δ) é igual ao número de vértices.
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: C</div>
+          <div class="answer-box">Grafo Cúbico = Grafo 3-Regular. Todos os vértices têm grau 3 sem exceção.
+            Consequentemente, Δ = δ = 3. Exemplo clássico: K₄ (grafo completo com 4 vértices).</div>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">5</div>
+          <div class="q-text">Um grafo pode ser classificado como Bipartido apenas se...</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option">
+            <div class="option-letter">a</div> For altamente irregular.
+          </div>
+          <div class="option">
+            <div class="option-letter">b</div> Possuir exatamente dois laços.
+          </div>
+          <div class="option correct">
+            <div class="option-letter">c</div> Todos os seus ciclos possuírem comprimento par.
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> For uma triangulação planar.
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: C</div>
+          <div class="answer-box">O teorema fundamental do bipartido diz: G é bipartido se e somente se G não contém
+            nenhum ciclo de comprimento ímpar. Se existir qualquer triângulo (C₃), pentágono (C₅) ou qualquer ciclo
+            ímpar, o grafo não pode ser bipartido.</div>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">6</div>
+          <div class="q-text">Um subconjunto de vértices onde nenhum possui aresta com outro do mesmo subconjunto é
+            chamado de:</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option">
+            <div class="option-letter">a</div> SCEE (Externamente Estável)
+          </div>
+          <div class="option">
+            <div class="option-letter">b</div> Núcleo
+          </div>
+          <div class="option correct">
+            <div class="option-letter">c</div> SCIE (Internamente Estável)
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> Grafo Onorífico
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: C</div>
+          <div class="answer-box">SCIE = Conjunto Independente (Internamente Estável). Os vértices do grupo não se
+            "conhecem" entre si — não há aresta alguma dentro do grupo. É o oposto do clique (onde todos se conectam).
+          </div>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">7</div>
+          <div class="q-text">O que representa o Delta (Δ) de um grafo?</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option">
+            <div class="option-letter">a</div> O número total de arestas do grafo.
+          </div>
+          <div class="option correct">
+            <div class="option-letter">b</div> O grau do vértice com mais conexões (grau máximo).
+          </div>
+          <div class="option">
+            <div class="option-letter">c</div> O número de triângulos formados na triangulação.
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> A complexidade espacial do algoritmo de busca.
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: B</div>
+          <div class="answer-box">Δ(G) é o grau máximo do grafo. Se os vértices têm graus {1, 2, 4, 3}, então Δ = 4. Na
+            coloração de arestas, Δ é o limite inferior do índice cromático (Teorema de Vizing).</div>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">8</div>
+          <div class="q-text">Quais são as condições que definem um Grafo Onorífico, segundo o Prof. Tenório?</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option correct">
+            <div class="option-letter">a</div> N ≤ 8, M = 7, dígrafo enraizado com caminho euleriano.
+          </div>
+          <div class="option">
+            <div class="option-letter">b</div> N = 7, M = 8, grafo biconexo e planar.
+          </div>
+          <div class="option">
+            <div class="option-letter">c</div> N ≤ 10, M = 5, fracamente conexo.
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> Grafo trivial e acíclico com N = 8.
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: A</div>
+          <div class="answer-box">O Onorífico precisa: (1) ser dígrafo, (2) N ≤ 8, (3) M = 7 exatamente, (4) ser
+            enraizado, e (5) ter caminho euleriano saindo da raiz. Se uma só dessas condições falhar, não é Onorífico.
+          </div>
+        </div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">9</div>
+          <div class="q-text">Na notação assintótica, qual símbolo representa o pior caso (limite superior) de um
+            algoritmo?</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option">
+            <div class="option-letter">a</div> Ω (Omega) — melhor caso
+          </div>
+          <div class="option">
+            <div class="option-letter">b</div> Θ (Theta) — caso médio
+          </div>
+          <div class="option correct">
+            <div class="option-letter">c</div> O (Big-O) — pior caso
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> Δ (Delta) — grau máximo
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: C</div>
+          <div class="answer-box">Big-O (O) representa o limite superior — o pior caso possível. Omega (Ω) é o melhor
+            caso (limite inferior). Theta (Θ) é o caso exato (quando os dois limites coincidem).</div>
+        </div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">10</div>
+          <div class="q-text">Uma aresta cuja remoção desconecta o grafo é denominada:</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option">
+            <div class="option-letter">a</div> Articulação
+          </div>
+          <div class="option">
+            <div class="option-letter">b</div> Talo
+          </div>
+          <div class="option correct">
+            <div class="option-letter">c</div> Ponte
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> Laço
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: C</div>
+          <div class="answer-box">Ponte = aresta de corte. Articulação = vértice de corte. São conceitos distintos: a
+            ponte é a LINHA que, se cortada, divide o grafo; a articulação é o PONTO que, se removido, divide o grafo.
+          </div>
+        </div>
+      </div>
+
+      <!-- Q11 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">11</div>
+          <div class="q-text">Qual é a classe de complexidade mais lenta, que se torna completamente inviável mesmo para
+            entradas moderadas?</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option">
+            <div class="option-letter">a</div> O(1) — constante
+          </div>
+          <div class="option">
+            <div class="option-letter">b</div> O(log N) — logarítmica
+          </div>
+          <div class="option">
+            <div class="option-letter">c</div> O(N²) — quadrática
+          </div>
+          <div class="option correct">
+            <div class="option-letter">d</div> O(N!) — fatorial
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: D</div>
+          <div class="answer-box">O(N!) cresce de forma absurda. Para N=10, são 3.628.800 operações. Para N=20, são 2,4
+            quintilhões. É a força bruta pura — tentar todas as permutações possíveis.</div>
+        </div>
+      </div>
+
+      <!-- Q12 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">12</div>
+          <div class="q-text">Em um dígrafo, o "Sumidouro" é o vértice onde:</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option">
+            <div class="option-letter">a</div> O grau de entrada é zero (só saem setas).
+          </div>
+          <div class="option correct">
+            <div class="option-letter">b</div> O grau de saída é zero (só chegam setas).
+          </div>
+          <div class="option">
+            <div class="option-letter">c</div> Não há nenhuma aresta conectada a ele.
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> O grau de entrada e de saída são iguais entre si.
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: B</div>
+          <div class="answer-box">Sumidouro = "ralo" ou "dreno". Todos os caminhos levam até ele, mas nada sai. Grau de
+            saída = 0. Já a Fonte é o oposto: grau de entrada = 0, só saem setas.</div>
+        </div>
+      </div>
+
+      <!-- Q13 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">13</div>
+          <div class="q-text">Qual é o principal objetivo da Redução Transitiva?</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option">
+            <div class="option-letter">a</div> Dobrar o número de arestas para aumentar a conectividade.
+          </div>
+          <div class="option correct">
+            <div class="option-letter">b</div> Remover arestas redundantes mantendo a mesma alcançabilidade entre todos
+            os vértices.
+          </div>
+          <div class="option">
+            <div class="option-letter">c</div> Transformar um dígrafo em um grafo planar.
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> Aumentar a complexidade temporal para Big-O.
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: B</div>
+          <div class="answer-box">A Redução Transitiva elimina arestas "atalho" que são desnecessárias porque já existe
+            um caminho alternativo. O resultado é o grafo mais simples que preserva toda a relação de alcançabilidade —
+            visualmente equivale ao Diagrama de Hasse.</div>
+        </div>
+      </div>
+
+      <!-- Q14 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">14</div>
+          <div class="q-text">Como é chamado o fecho em que a passagem pelo ciclo é completamente opcional?</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option">
+            <div class="option-letter">a</div> Fecho Positivo (+)
+          </div>
+          <div class="option">
+            <div class="option-letter">b</div> Fecho Neutro
+          </div>
+          <div class="option correct">
+            <div class="option-letter">c</div> Fecho Estrela (*)
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> Fecho de Articulação
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: C</div>
+          <div class="answer-box">Fecho Estrela (*): a passagem pelo balão/ciclo é opcional — zero ou mais vezes. Fecho
+            Positivo (+): a passagem é obrigatória pelo menos uma vez. A diferença está na obrigatoriedade.</div>
+        </div>
+      </div>
+
+      <!-- Q15 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">15</div>
+          <div class="q-text">Qual é a diferença fundamental entre Cadeia e Caminho, segundo a terminologia de Tenório?
+          </div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option">
+            <div class="option-letter">a</div> São sinônimos perfeitos, sem diferença alguma.
+          </div>
+          <div class="option">
+            <div class="option-letter">b</div> Cadeia obriga repetição de aresta; caminho não.
+          </div>
+          <div class="option correct">
+            <div class="option-letter">c</div> Cadeia permite repetição de vértices (como nos fechos); caminho simples
+            não permite repetição de vértices.
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> Cadeia só pode existir em grafos triangulados.
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: C</div>
+          <div class="answer-box">Na linguagem do Tenório: Cadeia é a sequência de arestas (pode revisitar vértices em
+            alguns contextos, como nos fechos). Caminho é mais restrito: não repete vértice. Todo caminho é uma cadeia,
+            mas nem toda cadeia é um caminho.</div>
+        </div>
+      </div>
+
+      <!-- Q16 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">16</div>
+          <div class="q-text">Se todos os vizinhos de cada vértice do grafo possuem graus mutuamente diferentes entre
+            si, o grafo é:</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option">
+            <div class="option-letter">a</div> Biconexo
+          </div>
+          <div class="option">
+            <div class="option-letter">b</div> Bipartido
+          </div>
+          <div class="option correct">
+            <div class="option-letter">c</div> Altamente Irregular
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> Cápsula
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: C</div>
+          <div class="answer-box">Um grafo é Altamente Irregular quando, para cada vértice v, os graus de todos os seus
+            vizinhos são distintos entre si. Não basta os vértices do grafo todo terem graus diferentes — a condição é
+            específica para cada vizinhança.</div>
+        </div>
+      </div>
+
+      <!-- Q17 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">17</div>
+          <div class="q-text">O que ocorre na operação "Soma" (+) entre dois grafos G1 e G2?</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option">
+            <div class="option-letter">a</div> Somam-se os valores numéricos das matrizes de adjacência.
+          </div>
+          <div class="option correct">
+            <div class="option-letter">b</div> Para cada vértice de G1, cria-se uma aresta conectando-o a todo vértice
+            de G2.
+          </div>
+          <div class="option">
+            <div class="option-letter">c</div> Multiplicam-se os graus dos vértices correspondentes.
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> Excluem-se os laços e arestas paralelas de ambos os grafos.
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: B</div>
+          <div class="answer-box">A soma G1 + G2 mantém todos os vértices e arestas originais de G1 e G2 e,
+            adicionalmente, acrescenta uma aresta entre cada vértice de G1 e cada vértice de G2. Resulta num grafo maior
+            e mais denso.</div>
+        </div>
+      </div>
+
+      <!-- Q18 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">18</div>
+          <div class="q-text">Um Bloco é formalmente definido como:</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option correct">
+            <div class="option-letter">a</div> Um subgrafo 2-conexo maximal ou uma aresta simples (K₂).
+          </div>
+          <div class="option">
+            <div class="option-letter">b</div> Um grafo trivial de um único vértice.
+          </div>
+          <div class="option">
+            <div class="option-letter">c</div> Qualquer ciclo de comprimento ímpar no grafo.
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> O centro geométrico de qualquer grafo planar.
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: A</div>
+          <div class="answer-box">Bloco = subgrafo biconexo maximal (não pode adicionar mais vértices sem criar
+            articulação) ou K₂ (uma aresta entre dois vértices). Se um vértice está em dois blocos, ele é articulação.
+          </div>
+        </div>
+      </div>
+
+      <!-- Q19 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">19</div>
+          <div class="q-text">Se você soma as complexidades O(N) + O(N²), qual é o resultado final considerado?</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option">
+            <div class="option-letter">a</div> O(N³)
+          </div>
+          <div class="option">
+            <div class="option-letter">b</div> O(1)
+          </div>
+          <div class="option">
+            <div class="option-letter">c</div> O(N)
+          </div>
+          <div class="option correct">
+            <div class="option-letter">d</div> O(N²) — o termo dominante sempre prevalece
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: D</div>
+          <div class="answer-box">Na análise assintótica, o termo de maior ordem domina e os menores são descartados.
+            O(N) + O(N²) = O(N²). Igualmente: O(1) + O(N) + O(N²) = O(N²). A constante mais alta "engole" as menores.
+          </div>
+        </div>
+      </div>
+
+      <!-- Q20 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num fechada">20</div>
+          <div class="q-text">O que significa a operação de Concatenação (//) em cadeias NÃO ser comutativa?</div>
+          <div class="q-toggle">▼</div>
+        </div>
+        <div class="question-body">
+          <div class="option correct">
+            <div class="option-letter">a</div> Significa que C₁ // C₂ ≠ C₂ // C₁ — a ordem das cadeias importa.
+          </div>
+          <div class="option">
+            <div class="option-letter">b</div> Significa que o resultado é sempre o elemento neutro lambda.
+          </div>
+          <div class="option">
+            <div class="option-letter">c</div> Significa que a concatenação anula os fechos do grafo.
+          </div>
+          <div class="option">
+            <div class="option-letter">d</div> Significa que só ocorre em grafos completos Kₙ.
+          </div>
+          <div class="gabarito-badge">✓ Gabarito: A</div>
+          <div class="answer-box">A concatenação C1 // C2 emenda o fim de C1 com o início de C2. Como o percurso tem
+            direção, trocar a ordem (C2 // C1) resulta num trajeto completamente diferente — por isso não é comutativa.
+          </div>
+        </div>
+      </div>
+      <!-- Q21-30 ABERTAS -->
+      <div class="q-divider"><span>B — QUESTOES ABERTAS (21 a 30)</span></div>
+
+      <!-- Q21 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">21</div>
+          <div class="q-text">O que e um "Laco" num grafo? Cite um exemplo pratico.</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">Um laco e uma aresta que sai de um vertice e retorna ao proprio vertice de origem. Na
+            matriz de adjacencia, o laco aparece como valor 1 na diagonal principal (posicao [i][i]). Exemplo pratico:
+            em um sistema de estados de uma maquina, um estado que pode "ficar no mesmo estado" representa um laco.
+          </div>
+        </div>
+      </div>
+
+      <!-- Q22 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">22</div>
+          <div class="q-text">Defina "Grau" de um vertice e explique o Teorema do Aperto de Maos.</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">O Grau de um vertice v, denotado d(v), e a quantidade de arestas que incidem sobre
+            ele. Cada laco conta como 2. O Teorema do Aperto de Maos afirma que a soma dos graus de todos os vertices e
+            sempre igual a 2M (dois vezes o numero de arestas). Isso porque cada aresta e contada duas vezes: uma em
+            cada extremidade. Consequencia: sempre existe um numero par de vertices com grau impar.</div>
+        </div>
+      </div>
+
+      <!-- Q23 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">23</div>
+          <div class="q-text">Qual a diferenca entre Articulacao e Ponte? Explique com suas palavras.</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">Articulacao e um VERTICE (ponto) que, ao ser removido junto com todas as arestas que o
+            tocam, desconecta o grafo em dois ou mais pedacos. Ponte e uma ARESTA (linha) que, ao ser cortada sozinha,
+            divide o grafo em duas partes. Ambos sao "calcanhares de Aquiles" do grafo, mas um e ponto e o outro e
+            linha. Todo grafo com ponte necessariamente tem articulacao (os dois extremos da ponte sao articulacoes),
+            mas o inverso nao e sempre verdade.</div>
+        </div>
+      </div>
+
+      <!-- Q24 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">24</div>
+          <div class="q-text">Dado um grafo com N=5 vertices e M=8 arestas (conexo), calcule o Posto.</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">Posto = M - N + 1 = 8 - 5 + 1 = 4. Isso significa que o grafo possui 4 arestas
+            "extras" alem de uma arvore geradora (que usaria N-1 = 4 arestas). Cada ELO (aresta extra) cria exatamente
+            um ciclo independente. Portanto, o grafo possui 4 ciclos independentes.</div>
+        </div>
+      </div>
+
+      <!-- Q25 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">25</div>
+          <div class="q-text">O que forma o "Nucleo" de um digrafo? Quais sao as duas condicoes necessarias?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">O Nucleo e um subconjunto S de vertices que satisfaz SIMULTANEAMENTE: (1) SCIE: nenhum
+            vertice de S possui aresta para outro vertice de S (sao independentes internamente); (2) SCEE: todo vertice
+            fora de S possui pelo menos uma seta apontando para algum vertice de S (dominancia externa). Se um digrafo
+            possuir nucleo, ele e unico.</div>
+        </div>
+      </div>
+
+      <!-- Q26 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">26</div>
+          <div class="q-text">O que e um Grafo Biconexo? Por que ele e considerado "forte"?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">Um grafo biconexo e aquele que nao possui nenhum vertice de articulacao. Para
+            desconectar um grafo biconexo, e necessario remover pelo menos 2 vertices simultaneamente — ou seja, o SCAM
+            (conjunto de corte minimo de vertices) tem tamanho minimo 2. E considerado "forte" porque e resistente a
+            falhas: a remocao de um unico ponto nao o desconecta.</div>
+        </div>
+      </div>
+
+      <!-- Q27 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">27</div>
+          <div class="q-text">Explique a diferenca entre Emparelhamento Maximo e Emparelhamento Perfeito.</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">Emparelhamento Maximo: o conjunto de arestas (sem compartilhar vertices) de maior
+            cardinalidade possivel no grafo. Pode ainda deixar alguns vertices sem par (expostos). Emparelhamento
+            Perfeito: todo vertice do grafo esta emparelhado — nenhum fica exposto. Todo emparelhamento perfeito e
+            maximo, mas nem todo maximo e perfeito. Para existir emparelhamento perfeito, o grafo precisa ter numero par
+            de vertices.</div>
+        </div>
+      </div>
+
+      <!-- Q28 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">28</div>
+          <div class="q-text">O que e um Caminho Aumentante no emparelhamento e por que ele e importante?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">Um Caminho Aumentante e um caminho alternante (alternando entre arestas dentro e fora
+            do emparelhamento M) que comeca e termina em vertices EXPOSTOS (sem par). Sua importancia: ao "inverter" o
+            emparelhamento ao longo desse caminho (arestas que estavam fora entram, e as que estavam dentro saem), o
+            tamanho do emparelhamento aumenta em 1. O Teorema de Berge afirma que um emparelhamento e maximo se e
+            somente se nao existe caminho aumentante.</div>
+        </div>
+      </div>
+
+      <!-- Q29 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">29</div>
+          <div class="q-text">Descreva o que acontece ao aplicar Reducao Transitiva. Que diagrama ela produz?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">A Reducao Transitiva identifica e remove todas as arestas que sao "redundantes" —
+            arestas que ligam A a C diretamente quando ja existe um caminho de A para C passando por outros vertices
+            (ex: A->B->C torna A->C redundante). O resultado final e o grafo mais simples que mantem exatamente a mesma
+            relacao de alcancabilidade do original. Visualmente, o resultado final de uma reducao transitiva e o
+            Diagrama de Hasse, usado em relacoes de ordem parcial.</div>
+        </div>
+      </div>
+
+      <!-- Q30 -->
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">30</div>
+          <div class="q-text">Como identificar se um grafo e Bipartido a partir de uma matriz de adjacencia?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">Passos: 1) Desenhe o grafo a partir da matriz. 2) Tente colorir os vertices com apenas
+            2 cores, de forma que vertices adjacentes tenham cores diferentes (algoritmo BFS/DFS de 2-coloracao). 3) Se
+            voce conseguir colorir com 2 cores sem conflito, o grafo e bipartido — o grupo A sao os vertices de uma cor
+            e o grupo B os de outra. 4) Se houver conflito (dois vertices da mesma cor ligados por uma aresta), o grafo
+            NAO e bipartido. Um conflito sempre ocorre quando existe um ciclo de comprimento impar.</div>
+        </div>
+      </div>
+      <!-- Q31-40 -->
+      <div class="q-divider"><span>B — QUESTOES ABERTAS (31 a 40)</span></div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">31</div>
+          <div class="q-text">Como funciona a regra do grafo Altamente Irregular? Construa um exemplo de sequencia de
+            graus valida.</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">No grafo Altamente Irregular, para cada vertice v, os graus de todos os seus vizinhos
+            devem ser MUTUAMENTE DISTINTOS (nenhum dois vizinhos de v podem ter o mesmo grau). Exemplo valido: vertice
+            central com grau 3 ligado a tres vertices de graus 1, 2 e 4 — todos diferentes entre si. Exemplo invalido:
+            vertice central ligado a dois vizinhos de grau 2 (repetido). A sequencia de graus dos vizinhos de cada
+            vertice deve ser uma sequencia sem repeticoes.</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">32</div>
+          <div class="q-text">Qual a diferenca entre Fonte e Sumidouro em um digrafo? Podem coexistir no mesmo grafo?
+          </div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">Fonte: grau de entrada = 0, grau de saida > 0. E o ponto de partida das setas.
+            Sumidouro: grau de saida = 0, grau de entrada > 0. E o ponto de chegada. Sim, podem coexistir: um DAG (Grafo
+            Aciclico Dirigido) tipicamente possui uma ou mais fontes e um ou mais sumidouros. Em um digrafo fortemente
+            conexo (onde existe caminho entre todo par de vertices), nao pode haver nem fonte nem sumidouro.</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">33</div>
+          <div class="q-text">O que e "Forca Bruta" em complexidade algoritmica? Por que e considerada inviavel?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">Forca Bruta e a estrategia de resolver um problema testando TODAS as
+            combinacoes/permutacoes possiveis ate encontrar a solucao. Resulta em complexidades O(2^n) ou O(N!), que
+            crescem de forma absurda. Para N=20, O(N!) resulta em 2,4 quintilhoes de operacoes — o que levaria bilhoes
+            de anos em qualquer computador atual. E inviavel porque o custo cresce muito mais rapido que o tamanho do
+            problema.</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">34</div>
+          <div class="q-text">O que a diagonal principal da Matriz de Adjacencia revela sobre o grafo?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">A diagonal principal (posicoes [1][1], [2][2], ..., [n][n]) indica a presenca de
+            lacos. Se a posicao [i][i] = 1, o vertice i possui um laco (aresta que sai e retorna a ele mesmo). Se [i][i]
+            = 0, o vertice nao tem laco. Em grafos simples (sem lacos), a diagonal e toda composta por zeros.</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">35</div>
+          <div class="q-text">Defina Grafo Trivial e explique por que ele e um caso especial.</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">O Grafo Trivial e o caso mais simples possivel: possui exatamente 1 vertice e 0
+            arestas. E um caso especial porque: (1) e conexo por definicao (existe apenas um componente); (2) e
+            bipartido (grupo A = {v}, grupo B = {}); (3) seu Posto = 0 - 1 + 1 = 0 ciclos; (4) sua arvore geradora e ele
+            mesmo. Em muitas definicoes e excluido por ser um caso degenerado.</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">36</div>
+          <div class="q-text">Qual e a condicao para existencia de um Bipartido Completo perfeito Kn,m?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">O Bipartido Completo K(n,m) exige: (1) os vertices estejam divididos em dois grupos A
+            (com n vertices) e B (com m vertices); (2) TODA aresta possivel entre A e B exista — sem excecao; (3)
+            NENHUMA aresta exista dentro de A ou dentro de B. O numero total de arestas e exatamente n x m. Exemplo:
+            K(2,3) tem 2x3 = 6 arestas. E o bipartido mais "populoso" possivel para aqueles tamanhos de grupo.</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">37</div>
+          <div class="q-text">O que e o Elemento Neutro (lambda) na concatenacao de cadeias?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">O Elemento Neutro lambda (simbolizado por λ) e a cadeia VAZIA — um percurso que nao
+            percorre nenhuma aresta e nao passa por nenhum vertice. Sua propriedade: C // λ = C e λ // C = C. Ou seja,
+            concatenar qualquer cadeia com λ nao altera a cadeia original. E o equivalente do zero na adicao ou do 1 na
+            multiplicacao.</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">38</div>
+          <div class="q-text">Como interpretar a notacao O(N) em termos praticos?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">O(N) significa que o tempo de execucao do algoritmo cresce de forma linear
+            proporcional ao tamanho da entrada N. Se dobrar o numero de vertices do grafo, o tempo de execucao tambem
+            aproximadamente dobra. Exemplo tipico: percorrer todos os vertices uma unica vez com um laco FOR. E uma
+            complexidade eficiente para a maioria dos casos praticos.</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">39</div>
+          <div class="q-text">O que e um Fecho Positivo (+) e como ele difere do Fecho Estrela (*)?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">Fecho Positivo (+): o ciclo (balao) dentro da cadeia DEVE ser percorrido pelo menos
+            uma vez. A passagem e obrigatoria. Fecho Estrela (*): o ciclo pode ser percorrido zero ou mais vezes — a
+            passagem e completamente opcional. Em expressoes regulares, essa analogia e direta: + significa "um ou mais"
+            e * significa "zero ou mais".</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">40</div>
+          <div class="q-text">Defina a operacao de Desdobramento de um vertice e qual e seu resultado.</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">O Desdobramento e uma operacao unaria que pega um unico vertice v e o "divide" em dois
+            vertices v' e v'', conectados por uma nova aresta entre eles. As arestas que antes incidiam em v sao
+            distribuidas entre v' e v''. O grafo resultante tem N+1 vertices e M+1 arestas. E util para modelar
+            situacoes onde um no precisa ser separado em duas funcoes distintas.</div>
+        </div>
+      </div>
+      <!-- Q41-50 -->
+      <div class="q-divider"><span>B — QUESTOES ABERTAS (41 a 50)</span></div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">41</div>
+          <div class="q-text">Explique a diferenca entre complexidade Temporal e Espacial de um algoritmo.</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">Complexidade Temporal mede o TEMPO que o algoritmo leva para executar —
+            especificamente o numero de operacoes realizadas em funcao do tamanho da entrada. Complexidade Espacial mede
+            a MEMORIA (RAM) que o algoritmo consome durante sua execucao — quantas variaveis, estruturas de dados e
+            pilha de recursao sao necessarias. Um algoritmo pode ser rapido (boa complexidade temporal) mas consumir
+            muita memoria (ma complexidade espacial), e vice-versa.</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">42</div>
+          <div class="q-text">Quando ocorre um Broto no emparelhamento? Qual e o papel do Talo?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">O Broto ocorre durante a busca por caminhos aumentantes: ao explorar o grafo
+            alternando arestas do emparelhamento e fora dele, o caminho "fecha um ciclo" com numero IMPAR de arestas —
+            isso e o Broto. O Talo e a aresta que conecta o vertice externo ao ciclo impar, completando o broto. O
+            algoritmo de Edmonds trata o broto contraindo-o em um super-vertice para continuar a busca.</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">43</div>
+          <div class="q-text">O que e um Triangulo Separador numa triangulacao planar?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">Um Triangulo Separador e um triangulo presente na triangulacao que possui outros
+            vertices e arestas dentro da regiao que ele delimita — ele "esconde" conteudo interno. Por isso, ele nao e
+            uma face triangular "limpa" ou livre do grafo. Ao contrario, as faces triangulares livres sao os triangulos
+            que nao contem nada dentro deles, sendo as verdadeiras faces da triangulacao. O triangulo separador funciona
+            como um "cercado" ao redor de uma sub-regiao do grafo.</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">44</div>
+          <div class="q-text">O que e o Grafo Subjacente de um Digrafo?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">O Grafo Subjacente e o grafo nao-direcionado obtido ao simplesmente IGNORAR a direcao
+            das setas de um digrafo. Cada seta vira uma aresta comum sem direcao. E util para verificar propriedades de
+            conectividade: por exemplo, um digrafo e FRACAMENTE conexo se seu grafo subjacente e conexo. A
+            direcionalidade e perdida, mas a estrutura de conexao e preservada.</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">45</div>
+          <div class="q-text">Como o Diagrama de Hasse se relaciona com a Reducao Transitiva?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">O Diagrama de Hasse e exatamente o resultado visual de aplicar a Reducao Transitiva a
+            uma relacao de ordem parcial. Ele mostra apenas as relacoes "imediatas" (diretas), omitindo todas as
+            relacoes dedutiveis por transitividade. Por convencao, o Diagrama de Hasse tambem omite as setas (a direcao
+            e indicada pelo posicionamento vertical: o maior elemento fica em cima). E usado em matematica para
+            representar ordens parciais de forma limpa e sem redundancia.</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">46</div>
+          <div class="q-text">Um Grafo Cubico e necessariamente regular. O que isso implica para Delta e delta?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">Em um grafo regular de grau k, todos os vertices tem exatamente grau k. Portanto:
+            Delta (grau maximo) = k e delta (grau minimo) = k, ou seja, Delta = delta = k. Para o grafo cubico
+            especificamente, Delta = delta = 3. O numero de vertices deve ser par (pois soma dos graus = 2M, e soma =
+            3N, logo 3N deve ser par, entao N deve ser par).</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">47</div>
+          <div class="q-text">Explique o Teorema de Vizing para coloracao de arestas (Classes 1 e 2).</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">O Teorema de Vizing afirma que para qualquer grafo simples, o indice cromatico (numero
+            minimo de cores para colorir arestas) e sempre Delta ou Delta + 1, onde Delta e o grau maximo. Classe 1: o
+            grafo consegue ser colorido com exatamente Delta cores (caso ideal). Classe 2: precisa de Delta + 1 cores
+            (precisa de uma cor extra). Determinar se um grafo e Classe 1 ou Classe 2 e um problema NP-dificil em geral.
+          </div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">48</div>
+          <div class="q-text">O que significa concatenar duas cadeias C1 e C2? Qual e a condicao para a concatenacao ser
+            valida?</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">Concatenar C1 // C2 significa "emendar" as duas cadeias em sequencia: o ultimo vertice
+            de C1 deve ser o mesmo que o primeiro vertice de C2 — esse e o ponto de juncao. A cadeia resultante e o
+            trajeto completo de C1 seguido de C2. A operacao NAO e comutativa: C1 // C2 produz um percurso diferente de
+            C2 // C1. A condicao de validade e que o vertice final de C1 coincida com o vertice inicial de C2.</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">49</div>
+          <div class="q-text">Descreva o que e o Complemento de um Grafo e como construi-lo a partir de um grafo G.
+          </div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">O Complemento de G (denotado G' ou G com barra) tem os mesmos N vertices de G, mas
+            suas arestas sao EXATAMENTE as que FALTAVAM em G para ele ser o grafo completo Kn. Construcao: (1) comece
+            com o grafo completo Kn dos mesmos vertices; (2) remova todas as arestas que existem em G. O que sobrar e o
+            complemento. Propriedade: G + complemento(G) = Kn. Se G tem M arestas, o complemento tem n(n-1)/2 - M
+            arestas.</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-header" onclick="toggle(this)">
+          <div class="q-num aberta">50</div>
+          <div class="q-text">Para o Prof. Tenorio, os limites N menor ou igual a 8 e M igual a 7 definem qual grafo
+            especial? Explique todas as suas caracteristicas.</div>
+          <div class="q-toggle">v</div>
+        </div>
+        <div class="question-body">
+          <div class="answer-label">Resposta</div>
+          <div class="answer-box">Essas restricoes definem o GRAFO ONORIFICO. Suas 5 caracteristicas obrigatorias: (1) e
+            um DIGRAFO (grafo com setas direcionadas); (2) possui no MAXIMO 8 vertices (N menor ou igual a 8); (3)
+            possui EXATAMENTE 7 arestas (M = 7); (4) e um digrafo ENRAIZADO — existe um vertice especial designado como
+            raiz (ponto de partida); (5) existe um CAMINHO EULERIANO partindo da raiz — um trajeto que percorre cada uma
+            das 7 arestas exatamente uma vez. Se qualquer uma dessas 5 condicoes falhar, o grafo nao e Onorifico.</div>
+        </div>
+      </div>
+
+    </div><!-- fim questions-section -->
+
+  </div><!-- fim container -->
+
+  <footer>
+    <p>Teoria dos Grafos — Prof. Tenorio &nbsp;|&nbsp; Guia Completo do Zero ao Avancado</p>
+    <p style="margin-top:6px;font-size:0.75rem;">17 topicos &bull; 50 questoes comentadas &bull; Grafos SVG interativos
+      &bull; Matrizes de adjacencia</p>
+  </footer>
+
+  <script>
+    // ===== ACCORDION TOGGLE (Open questions) =====
+    function toggle(header) {
+      var body = header.nextElementSibling;
+      var icon = header.querySelector('.q-toggle');
+      if (body.classList.contains('show')) {
+        body.classList.remove('show');
+        icon.classList.remove('open');
+      } else {
+        body.classList.add('show');
+        icon.classList.add('open');
+      }
+    }
+
+    // ===== INTERACTIVE QUIZ (Closed questions) =====
+    var quizAnswers = {}; // { questionId: selectedLetter }
+    var quizDone = {};    // { questionId: true } when submitted
+    var correctCount = 0;
+    var totalClosed = 20;
+
+    function selectOption(el, questionId) {
+      if (quizDone[questionId]) return; // already answered
+      // Deselect all in this question
+      var card = el.closest('.question-card');
+      card.querySelectorAll('.quiz-option').forEach(function(opt) {
+        opt.classList.remove('selected');
+      });
+      el.classList.add('selected');
+      quizAnswers[questionId] = el.getAttribute('data-letter');
+    }
+
+    function submitQuiz(questionId, correctLetter, explanation) {
+      if (quizDone[questionId]) return;
+      var selected = quizAnswers[questionId];
+      if (!selected) {
+        alert('Selecione uma alternativa antes de responder!');
+        return;
+      }
+      quizDone[questionId] = true;
+
+      var card = document.getElementById('q-' + questionId);
+      var feedback = document.getElementById('fb-' + questionId);
+      var btn = document.getElementById('btn-' + questionId);
+      btn.disabled = true;
+
+      // Reveal correct / wrong styling
+      card.querySelectorAll('.quiz-option').forEach(function(opt) {
+        var letter = opt.getAttribute('data-letter');
+        if (letter === correctLetter) {
+          opt.classList.add('correct-reveal');
+          opt.classList.remove('selected');
+        } else if (letter === selected && selected !== correctLetter) {
+          opt.classList.add('wrong-reveal');
+          opt.classList.remove('selected');
+        }
+      });
+
+      // Show feedback
+      var isCorrect = selected === correctLetter;
+      if (isCorrect) {
+        correctCount++;
+        feedback.className = 'quiz-feedback show acerto';
+        feedback.innerHTML = '<div class="quiz-feedback-title">✅ Você acertou!</div>' +
+          '<div style="color:var(--text2)"><strong style="color:var(--accent3)">Gabarito: ' + correctLetter.toUpperCase() + '</strong> — ' + explanation + '</div>';
+      } else {
+        feedback.className = 'quiz-feedback show erro';
+        feedback.innerHTML = '<div class="quiz-feedback-title">❌ Não foi dessa vez...</div>' +
+          '<div style="color:var(--text2)">Você marcou <strong style="color:var(--accent5)">' + selected.toUpperCase() + '</strong>. ' +
+          '<strong style="color:var(--accent3)">Gabarito correto: ' + correctLetter.toUpperCase() + '</strong><br><br>' + explanation + '</div>';
+      }
+
+      // Update score bar
+      updateScore();
+    }
+
+    function updateScore() {
+      var answered = Object.keys(quizDone).length;
+      var pct = answered > 0 ? Math.round((correctCount / answered) * 100) : 0;
+      var el = document.getElementById('score-num');
+      var bar = document.getElementById('score-fill');
+      var lbl = document.getElementById('score-label');
+      if (el) el.textContent = correctCount + '/' + answered;
+      if (bar) bar.style.width = pct + '%';
+      if (lbl) lbl.textContent = answered + ' de ' + totalClosed + ' respondidas — ' + pct + '% de acerto';
+    }
+
+    function resetQuiz() {
+      quizAnswers = {};
+      quizDone = {};
+      correctCount = 0;
+      document.querySelectorAll('.quiz-option').forEach(function(opt) {
+        opt.classList.remove('selected', 'correct-reveal', 'wrong-reveal');
+      });
+      document.querySelectorAll('.quiz-feedback').forEach(function(fb) {
+        fb.className = 'quiz-feedback';
+        fb.innerHTML = '';
+      });
+      document.querySelectorAll('.quiz-btn').forEach(function(btn) {
+        btn.disabled = false;
+      });
+      updateScore();
+    }
+
+    // ===== SMOOTH SCROLL =====
+    document.querySelectorAll('.toc-link').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        var href = this.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          var target = document.querySelector(href);
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Init score bar
+    document.addEventListener('DOMContentLoaded', updateScore);
+  </script>
+
+</body>
+
+</html>
+
+
+
