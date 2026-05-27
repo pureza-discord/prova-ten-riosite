@@ -2011,551 +2011,346 @@
         <button class="quiz-reset-btn" onclick="resetQuiz()">↺ Reiniciar Quiz</button>
       </div>
 
-      <!-- Q1 -->
-      <div class="question-card">
+            <!-- Q1 -->
+      <div class="question-card" id="q-1">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">1</div>
-          <div class="q-text">Em um grafo completo Kₙ, qual afirmação descreve corretamente as conexões entre seus
-            vértices?</div>
+          <div class="q-text">Em um grafo completo Kₙ, qual afirmação descreve corretamente as conexões entre seus vértices?</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option correct">
-            <div class="option-letter">a</div> Todo vértice possui uma aresta ligando-o a absolutamente todos os outros
-            vértices do grafo.
-          </div>
-          <div class="option">
-            <div class="option-letter">b</div> Apenas metade dos vértices estão conectados entre si.
-          </div>
-          <div class="option">
-            <div class="option-letter">c</div> Nenhum vértice possui conexão com outro.
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> As ligações existem apenas entre pares de vértices consecutivos.
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: A</div>
-          <div class="answer-box">No grafo completo Kₙ, cada vértice possui exatamente n−1 arestas, uma para cada outro
-            vértice do grafo. O número total de arestas é n×(n−1)/2. Por exemplo, K₄ tem 4×3/2 = 6 arestas.</div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,1)"><div class="quiz-letter">A</div><div>Todo vértice possui uma aresta ligando-o a absolutamente todos os outros vértices do grafo.</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,1)"><div class="quiz-letter">B</div><div>Apenas metade dos vértices estão conectados entre si.</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,1)"><div class="quiz-letter">C</div><div>Nenhum vértice possui conexão com outro.</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,1)"><div class="quiz-letter">D</div><div>As ligações existem apenas entre pares de vértices consecutivos.</div></div>
+          <button class="quiz-btn" id="btn-1" onclick="submitQuiz(1,'a','No grafo completo Kₙ, cada vértice possui exatamente n-1 arestas. Total de arestas: n*(n-1)/2. K4 tem 6 arestas.')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-1"></div>
         </div>
       </div>
 
       <!-- Q2 -->
-      <div class="question-card">
+      <div class="question-card" id="q-2">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">2</div>
-          <div class="q-text">Qual é a fórmula correta para calcular o Posto (número ciclomático) de um grafo conexo?
-          </div>
+          <div class="q-text">Qual é a fórmula correta para calcular o Posto (número ciclomático) de um grafo conexo?</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option">
-            <div class="option-letter">a</div> N + M − 2
-          </div>
-          <div class="option correct">
-            <div class="option-letter">b</div> M − N + 1
-          </div>
-          <div class="option">
-            <div class="option-letter">c</div> N − M + 1
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> 3N − 6
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: B</div>
-          <div class="answer-box">O Posto = M − N + 1, onde M = número de arestas e N = número de vértices. Representa
-            quantas arestas extras (ELOs) existem além de uma árvore geradora. Exemplo: grafo com 6 arestas e 4 vértices
-            → Posto = 6 − 4 + 1 = 3.</div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,2)"><div class="quiz-letter">A</div><div>N + M − 2</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,2)"><div class="quiz-letter">B</div><div>M − N + 1</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,2)"><div class="quiz-letter">C</div><div>N − M + 1</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,2)"><div class="quiz-letter">D</div><div>3N − 6</div></div>
+          <button class="quiz-btn" id="btn-2" onclick="submitQuiz(2,'b','Posto = M - N + 1. Representa quantas arestas extras (ELOs) existem além de uma árvore geradora.')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-2"></div>
         </div>
       </div>
 
       <!-- Q3 -->
-      <div class="question-card">
+      <div class="question-card" id="q-3">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">3</div>
-          <div class="q-text">Segundo o Prof. Tenório, o que é um "Broto" no contexto de emparelhamento?</div>
+          <div class="q-text">Segundo o Prof. Tenório, o que é um 'Broto' no contexto de emparelhamento?</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option">
-            <div class="option-letter">a</div> Um vértice com grau igual a 1.
-          </div>
-          <div class="option">
-            <div class="option-letter">b</div> Um ciclo alternante de comprimento par.
-          </div>
-          <div class="option">
-            <div class="option-letter">c</div> Um caminho de custo máximo no grafo.
-          </div>
-          <div class="option correct">
-            <div class="option-letter">d</div> Um ciclo M-alternante de comprimento ímpar.
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: D</div>
-          <div class="answer-box">O Broto (Blossom) é um ciclo alternante (que alterna entre arestas pertencentes e não
-            pertencentes ao emparelhamento M) que possui comprimento ímpar (3, 5, 7... arestas). A aresta que "entra" no
-            broto se chama Talo. O algoritmo de Edmonds contrai brotos para encontrar emparelhamentos máximos.</div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,3)"><div class="quiz-letter">A</div><div>Um vértice com grau igual a 1.</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,3)"><div class="quiz-letter">B</div><div>Um ciclo alternante de comprimento par.</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,3)"><div class="quiz-letter">C</div><div>Um caminho de custo máximo no grafo.</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,3)"><div class="quiz-letter">D</div><div>Um ciclo M-alternante de comprimento ímpar.</div></div>
+          <button class="quiz-btn" id="btn-3" onclick="submitQuiz(3,'d','Broto (Blossom) é um ciclo alternante de comprimento ÍMPAR. A aresta que fecha o broto se chama Talo.')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-3"></div>
         </div>
       </div>
 
       <!-- Q4 -->
-      <div class="question-card">
+      <div class="question-card" id="q-4">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">4</div>
-          <div class="q-text">O que define um "Grafo Cúbico"?</div>
+          <div class="q-text">O que define um 'Grafo Cúbico'?</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option">
-            <div class="option-letter">a</div> Um grafo desenhado em formato de cubo tridimensional.
-          </div>
-          <div class="option">
-            <div class="option-letter">b</div> Um grafo com exatamente 3 arestas no total.
-          </div>
-          <div class="option correct">
-            <div class="option-letter">c</div> Um grafo regular onde todos os vértices possuem grau exatamente igual a
-            3.
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> Um grafo onde o Delta (Δ) é igual ao número de vértices.
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: C</div>
-          <div class="answer-box">Grafo Cúbico = Grafo 3-Regular. Todos os vértices têm grau 3 sem exceção.
-            Consequentemente, Δ = δ = 3. Exemplo clássico: K₄ (grafo completo com 4 vértices).</div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,4)"><div class="quiz-letter">A</div><div>Um grafo desenhado em formato de cubo tridimensional.</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,4)"><div class="quiz-letter">B</div><div>Um grafo com exatamente 3 arestas no total.</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,4)"><div class="quiz-letter">C</div><div>Um grafo regular onde todos os vértices possuem grau exatamente igual a 3.</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,4)"><div class="quiz-letter">D</div><div>Um grafo onde o Delta é igual ao número de vértices.</div></div>
+          <button class="quiz-btn" id="btn-4" onclick="submitQuiz(4,'c','Grafo Cúbico = Grafo 3-Regular. Todos os vértices têm grau 3 sem exceção. Delta = delta = 3.')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-4"></div>
         </div>
       </div>
 
       <!-- Q5 -->
-      <div class="question-card">
+      <div class="question-card" id="q-5">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">5</div>
           <div class="q-text">Um grafo pode ser classificado como Bipartido apenas se...</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option">
-            <div class="option-letter">a</div> For altamente irregular.
-          </div>
-          <div class="option">
-            <div class="option-letter">b</div> Possuir exatamente dois laços.
-          </div>
-          <div class="option correct">
-            <div class="option-letter">c</div> Todos os seus ciclos possuírem comprimento par.
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> For uma triangulação planar.
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: C</div>
-          <div class="answer-box">O teorema fundamental do bipartido diz: G é bipartido se e somente se G não contém
-            nenhum ciclo de comprimento ímpar. Se existir qualquer triângulo (C₃), pentágono (C₅) ou qualquer ciclo
-            ímpar, o grafo não pode ser bipartido.</div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,5)"><div class="quiz-letter">A</div><div>For altamente irregular.</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,5)"><div class="quiz-letter">B</div><div>Possuir exatamente dois laços.</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,5)"><div class="quiz-letter">C</div><div>Todos os seus ciclos possuírem comprimento par.</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,5)"><div class="quiz-letter">D</div><div>For uma triangulação planar.</div></div>
+          <button class="quiz-btn" id="btn-5" onclick="submitQuiz(5,'c','G é bipartido se e somente se não contém nenhum ciclo de comprimento ímpar. Um triângulo já elimina a bipartição.')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-5"></div>
         </div>
       </div>
 
       <!-- Q6 -->
-      <div class="question-card">
+      <div class="question-card" id="q-6">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">6</div>
-          <div class="q-text">Um subconjunto de vértices onde nenhum possui aresta com outro do mesmo subconjunto é
-            chamado de:</div>
+          <div class="q-text">Um subconjunto de vértices onde nenhum possui aresta com outro do mesmo subconjunto é chamado de:</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option">
-            <div class="option-letter">a</div> SCEE (Externamente Estável)
-          </div>
-          <div class="option">
-            <div class="option-letter">b</div> Núcleo
-          </div>
-          <div class="option correct">
-            <div class="option-letter">c</div> SCIE (Internamente Estável)
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> Grafo Onorífico
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: C</div>
-          <div class="answer-box">SCIE = Conjunto Independente (Internamente Estável). Os vértices do grupo não se
-            "conhecem" entre si — não há aresta alguma dentro do grupo. É o oposto do clique (onde todos se conectam).
-          </div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,6)"><div class="quiz-letter">A</div><div>SCEE (Externamente Estável)</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,6)"><div class="quiz-letter">B</div><div>Núcleo</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,6)"><div class="quiz-letter">C</div><div>SCIE (Internamente Estável)</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,6)"><div class="quiz-letter">D</div><div>Grafo Onorífico</div></div>
+          <button class="quiz-btn" id="btn-6" onclick="submitQuiz(6,'c','SCIE = Conjunto Independente. Os vértices do grupo não se conectam entre si — nenhuma aresta interna ao grupo.')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-6"></div>
         </div>
       </div>
 
       <!-- Q7 -->
-      <div class="question-card">
+      <div class="question-card" id="q-7">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">7</div>
           <div class="q-text">O que representa o Delta (Δ) de um grafo?</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option">
-            <div class="option-letter">a</div> O número total de arestas do grafo.
-          </div>
-          <div class="option correct">
-            <div class="option-letter">b</div> O grau do vértice com mais conexões (grau máximo).
-          </div>
-          <div class="option">
-            <div class="option-letter">c</div> O número de triângulos formados na triangulação.
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> A complexidade espacial do algoritmo de busca.
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: B</div>
-          <div class="answer-box">Δ(G) é o grau máximo do grafo. Se os vértices têm graus {1, 2, 4, 3}, então Δ = 4. Na
-            coloração de arestas, Δ é o limite inferior do índice cromático (Teorema de Vizing).</div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,7)"><div class="quiz-letter">A</div><div>O número total de arestas do grafo.</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,7)"><div class="quiz-letter">B</div><div>O grau do vértice com mais conexões (grau máximo).</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,7)"><div class="quiz-letter">C</div><div>O número de triângulos formados na triangulação.</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,7)"><div class="quiz-letter">D</div><div>A complexidade espacial do algoritmo de busca.</div></div>
+          <button class="quiz-btn" id="btn-7" onclick="submitQuiz(7,'b','Delta(G) é o grau máximo — o vértice mais conectado. Na coloração de arestas, Delta é o limite inferior (Vizing).')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-7"></div>
         </div>
       </div>
 
       <!-- Q8 -->
-      <div class="question-card">
+      <div class="question-card" id="q-8">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">8</div>
           <div class="q-text">Quais são as condições que definem um Grafo Onorífico, segundo o Prof. Tenório?</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option correct">
-            <div class="option-letter">a</div> N ≤ 8, M = 7, dígrafo enraizado com caminho euleriano.
-          </div>
-          <div class="option">
-            <div class="option-letter">b</div> N = 7, M = 8, grafo biconexo e planar.
-          </div>
-          <div class="option">
-            <div class="option-letter">c</div> N ≤ 10, M = 5, fracamente conexo.
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> Grafo trivial e acíclico com N = 8.
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: A</div>
-          <div class="answer-box">O Onorífico precisa: (1) ser dígrafo, (2) N ≤ 8, (3) M = 7 exatamente, (4) ser
-            enraizado, e (5) ter caminho euleriano saindo da raiz. Se uma só dessas condições falhar, não é Onorífico.
-          </div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,8)"><div class="quiz-letter">A</div><div>N ≤ 8, M = 7, dígrafo enraizado com caminho euleriano.</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,8)"><div class="quiz-letter">B</div><div>N = 7, M = 8, grafo biconexo e planar.</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,8)"><div class="quiz-letter">C</div><div>N ≤ 10, M = 5, fracamente conexo.</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,8)"><div class="quiz-letter">D</div><div>Grafo trivial e acíclico com N = 8.</div></div>
+          <button class="quiz-btn" id="btn-8" onclick="submitQuiz(8,'a','Onorífico: (1) dígrafo, (2) N ≤ 8, (3) M = 7 exato, (4) enraizado, (5) caminho euleriano da raiz. Todas as 5 condições.')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-8"></div>
         </div>
       </div>
 
       <!-- Q9 -->
-      <div class="question-card">
+      <div class="question-card" id="q-9">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">9</div>
-          <div class="q-text">Na notação assintótica, qual símbolo representa o pior caso (limite superior) de um
-            algoritmo?</div>
+          <div class="q-text">Na notação assintótica, qual símbolo representa o pior caso (limite superior) de um algoritmo?</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option">
-            <div class="option-letter">a</div> Ω (Omega) — melhor caso
-          </div>
-          <div class="option">
-            <div class="option-letter">b</div> Θ (Theta) — caso médio
-          </div>
-          <div class="option correct">
-            <div class="option-letter">c</div> O (Big-O) — pior caso
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> Δ (Delta) — grau máximo
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: C</div>
-          <div class="answer-box">Big-O (O) representa o limite superior — o pior caso possível. Omega (Ω) é o melhor
-            caso (limite inferior). Theta (Θ) é o caso exato (quando os dois limites coincidem).</div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,9)"><div class="quiz-letter">A</div><div>Ω (Omega) — melhor caso</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,9)"><div class="quiz-letter">B</div><div>Θ (Theta) — caso médio</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,9)"><div class="quiz-letter">C</div><div>O (Big-O) — pior caso</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,9)"><div class="quiz-letter">D</div><div>Δ (Delta) — grau máximo</div></div>
+          <button class="quiz-btn" id="btn-9" onclick="submitQuiz(9,'c','Big-O = limite superior (pior caso). Omega = melhor caso. Theta = caso exato (quando os dois limites coincidem).')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-9"></div>
         </div>
       </div>
 
       <!-- Q10 -->
-      <div class="question-card">
+      <div class="question-card" id="q-10">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">10</div>
           <div class="q-text">Uma aresta cuja remoção desconecta o grafo é denominada:</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option">
-            <div class="option-letter">a</div> Articulação
-          </div>
-          <div class="option">
-            <div class="option-letter">b</div> Talo
-          </div>
-          <div class="option correct">
-            <div class="option-letter">c</div> Ponte
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> Laço
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: C</div>
-          <div class="answer-box">Ponte = aresta de corte. Articulação = vértice de corte. São conceitos distintos: a
-            ponte é a LINHA que, se cortada, divide o grafo; a articulação é o PONTO que, se removido, divide o grafo.
-          </div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,10)"><div class="quiz-letter">A</div><div>Articulação</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,10)"><div class="quiz-letter">B</div><div>Talo</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,10)"><div class="quiz-letter">C</div><div>Ponte</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,10)"><div class="quiz-letter">D</div><div>Laço</div></div>
+          <button class="quiz-btn" id="btn-10" onclick="submitQuiz(10,'c','Ponte = aresta de corte. Articulação = vértice de corte. São conceitos distintos: linha vs. ponto que divide o grafo.')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-10"></div>
         </div>
       </div>
 
       <!-- Q11 -->
-      <div class="question-card">
+      <div class="question-card" id="q-11">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">11</div>
-          <div class="q-text">Qual é a classe de complexidade mais lenta, que se torna completamente inviável mesmo para
-            entradas moderadas?</div>
+          <div class="q-text">Qual é a classe de complexidade mais lenta, inviável mesmo para entradas moderadas?</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option">
-            <div class="option-letter">a</div> O(1) — constante
-          </div>
-          <div class="option">
-            <div class="option-letter">b</div> O(log N) — logarítmica
-          </div>
-          <div class="option">
-            <div class="option-letter">c</div> O(N²) — quadrática
-          </div>
-          <div class="option correct">
-            <div class="option-letter">d</div> O(N!) — fatorial
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: D</div>
-          <div class="answer-box">O(N!) cresce de forma absurda. Para N=10, são 3.628.800 operações. Para N=20, são 2,4
-            quintilhões. É a força bruta pura — tentar todas as permutações possíveis.</div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,11)"><div class="quiz-letter">A</div><div>O(1) — constante</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,11)"><div class="quiz-letter">B</div><div>O(log N) — logarítmica</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,11)"><div class="quiz-letter">C</div><div>O(N²) — quadrática</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,11)"><div class="quiz-letter">D</div><div>O(N!) — fatorial</div></div>
+          <button class="quiz-btn" id="btn-11" onclick="submitQuiz(11,'d','O(N!) é a força bruta pura. Para N=10 são 3.628.800 operações. Para N=20 são 2,4 quintilhões — inviável.')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-11"></div>
         </div>
       </div>
 
       <!-- Q12 -->
-      <div class="question-card">
+      <div class="question-card" id="q-12">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">12</div>
-          <div class="q-text">Em um dígrafo, o "Sumidouro" é o vértice onde:</div>
+          <div class="q-text">Em um dígrafo, o 'Sumidouro' é o vértice onde:</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option">
-            <div class="option-letter">a</div> O grau de entrada é zero (só saem setas).
-          </div>
-          <div class="option correct">
-            <div class="option-letter">b</div> O grau de saída é zero (só chegam setas).
-          </div>
-          <div class="option">
-            <div class="option-letter">c</div> Não há nenhuma aresta conectada a ele.
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> O grau de entrada e de saída são iguais entre si.
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: B</div>
-          <div class="answer-box">Sumidouro = "ralo" ou "dreno". Todos os caminhos levam até ele, mas nada sai. Grau de
-            saída = 0. Já a Fonte é o oposto: grau de entrada = 0, só saem setas.</div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,12)"><div class="quiz-letter">A</div><div>O grau de entrada é zero (só saem setas).</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,12)"><div class="quiz-letter">B</div><div>O grau de saída é zero (só chegam setas).</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,12)"><div class="quiz-letter">C</div><div>Não há nenhuma aresta conectada a ele.</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,12)"><div class="quiz-letter">D</div><div>O grau de entrada e de saída são iguais entre si.</div></div>
+          <button class="quiz-btn" id="btn-12" onclick="submitQuiz(12,'b','Sumidouro: todos os caminhos chegam até ele, nada sai. Grau de saída = 0. Fonte é o oposto: grau de entrada = 0.')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-12"></div>
         </div>
       </div>
 
       <!-- Q13 -->
-      <div class="question-card">
+      <div class="question-card" id="q-13">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">13</div>
           <div class="q-text">Qual é o principal objetivo da Redução Transitiva?</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option">
-            <div class="option-letter">a</div> Dobrar o número de arestas para aumentar a conectividade.
-          </div>
-          <div class="option correct">
-            <div class="option-letter">b</div> Remover arestas redundantes mantendo a mesma alcançabilidade entre todos
-            os vértices.
-          </div>
-          <div class="option">
-            <div class="option-letter">c</div> Transformar um dígrafo em um grafo planar.
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> Aumentar a complexidade temporal para Big-O.
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: B</div>
-          <div class="answer-box">A Redução Transitiva elimina arestas "atalho" que são desnecessárias porque já existe
-            um caminho alternativo. O resultado é o grafo mais simples que preserva toda a relação de alcançabilidade —
-            visualmente equivale ao Diagrama de Hasse.</div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,13)"><div class="quiz-letter">A</div><div>Dobrar o número de arestas para aumentar a conectividade.</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,13)"><div class="quiz-letter">B</div><div>Remover arestas redundantes mantendo a mesma alcançabilidade entre todos os vértices.</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,13)"><div class="quiz-letter">C</div><div>Transformar um dígrafo em um grafo planar.</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,13)"><div class="quiz-letter">D</div><div>Aumentar a complexidade temporal para Big-O.</div></div>
+          <button class="quiz-btn" id="btn-13" onclick="submitQuiz(13,'b','Redução Transitiva elimina arestas atalho redundantes sem perder alcançabilidade. Resultado visual: Diagrama de Hasse.')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-13"></div>
         </div>
       </div>
 
       <!-- Q14 -->
-      <div class="question-card">
+      <div class="question-card" id="q-14">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">14</div>
           <div class="q-text">Como é chamado o fecho em que a passagem pelo ciclo é completamente opcional?</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option">
-            <div class="option-letter">a</div> Fecho Positivo (+)
-          </div>
-          <div class="option">
-            <div class="option-letter">b</div> Fecho Neutro
-          </div>
-          <div class="option correct">
-            <div class="option-letter">c</div> Fecho Estrela (*)
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> Fecho de Articulação
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: C</div>
-          <div class="answer-box">Fecho Estrela (*): a passagem pelo balão/ciclo é opcional — zero ou mais vezes. Fecho
-            Positivo (+): a passagem é obrigatória pelo menos uma vez. A diferença está na obrigatoriedade.</div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,14)"><div class="quiz-letter">A</div><div>Fecho Positivo (+)</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,14)"><div class="quiz-letter">B</div><div>Fecho Neutro</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,14)"><div class="quiz-letter">C</div><div>Fecho Estrela (*)</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,14)"><div class="quiz-letter">D</div><div>Fecho de Articulação</div></div>
+          <button class="quiz-btn" id="btn-14" onclick="submitQuiz(14,'c','Fecho Estrela (*): zero ou mais vezes (opcional). Fecho Positivo (+): pelo menos uma vez (obrigatório).')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-14"></div>
         </div>
       </div>
 
       <!-- Q15 -->
-      <div class="question-card">
+      <div class="question-card" id="q-15">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">15</div>
-          <div class="q-text">Qual é a diferença fundamental entre Cadeia e Caminho, segundo a terminologia de Tenório?
-          </div>
+          <div class="q-text">Qual a diferença fundamental entre Cadeia e Caminho, na terminologia de Tenório?</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option">
-            <div class="option-letter">a</div> São sinônimos perfeitos, sem diferença alguma.
-          </div>
-          <div class="option">
-            <div class="option-letter">b</div> Cadeia obriga repetição de aresta; caminho não.
-          </div>
-          <div class="option correct">
-            <div class="option-letter">c</div> Cadeia permite repetição de vértices (como nos fechos); caminho simples
-            não permite repetição de vértices.
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> Cadeia só pode existir em grafos triangulados.
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: C</div>
-          <div class="answer-box">Na linguagem do Tenório: Cadeia é a sequência de arestas (pode revisitar vértices em
-            alguns contextos, como nos fechos). Caminho é mais restrito: não repete vértice. Todo caminho é uma cadeia,
-            mas nem toda cadeia é um caminho.</div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,15)"><div class="quiz-letter">A</div><div>São sinônimos perfeitos, sem diferença alguma.</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,15)"><div class="quiz-letter">B</div><div>Cadeia obriga repetição de aresta; caminho não.</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,15)"><div class="quiz-letter">C</div><div>Cadeia permite repetição de vértices (como nos fechos); caminho simples não permite.</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,15)"><div class="quiz-letter">D</div><div>Cadeia só pode existir em grafos triangulados.</div></div>
+          <button class="quiz-btn" id="btn-15" onclick="submitQuiz(15,'c','Cadeia pode revisitar vértices (ex: nos fechos). Caminho simples não repete vértice. Todo caminho é cadeia, mas nem toda cadeia é caminho.')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-15"></div>
         </div>
       </div>
 
       <!-- Q16 -->
-      <div class="question-card">
+      <div class="question-card" id="q-16">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">16</div>
-          <div class="q-text">Se todos os vizinhos de cada vértice do grafo possuem graus mutuamente diferentes entre
-            si, o grafo é:</div>
+          <div class="q-text">Se todos os vizinhos de cada vértice possuem graus mutuamente diferentes entre si, o grafo é:</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option">
-            <div class="option-letter">a</div> Biconexo
-          </div>
-          <div class="option">
-            <div class="option-letter">b</div> Bipartido
-          </div>
-          <div class="option correct">
-            <div class="option-letter">c</div> Altamente Irregular
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> Cápsula
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: C</div>
-          <div class="answer-box">Um grafo é Altamente Irregular quando, para cada vértice v, os graus de todos os seus
-            vizinhos são distintos entre si. Não basta os vértices do grafo todo terem graus diferentes — a condição é
-            específica para cada vizinhança.</div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,16)"><div class="quiz-letter">A</div><div>Biconexo</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,16)"><div class="quiz-letter">B</div><div>Bipartido</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,16)"><div class="quiz-letter">C</div><div>Altamente Irregular</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,16)"><div class="quiz-letter">D</div><div>Cápsula</div></div>
+          <button class="quiz-btn" id="btn-16" onclick="submitQuiz(16,'c','Altamente Irregular: para cada vértice v, os graus de todos os seus VIZINHOS são distintos entre si.')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-16"></div>
         </div>
       </div>
 
       <!-- Q17 -->
-      <div class="question-card">
+      <div class="question-card" id="q-17">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">17</div>
-          <div class="q-text">O que ocorre na operação "Soma" (+) entre dois grafos G1 e G2?</div>
+          <div class="q-text">O que ocorre na operação 'Soma' (+) entre dois grafos G1 e G2?</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option">
-            <div class="option-letter">a</div> Somam-se os valores numéricos das matrizes de adjacência.
-          </div>
-          <div class="option correct">
-            <div class="option-letter">b</div> Para cada vértice de G1, cria-se uma aresta conectando-o a todo vértice
-            de G2.
-          </div>
-          <div class="option">
-            <div class="option-letter">c</div> Multiplicam-se os graus dos vértices correspondentes.
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> Excluem-se os laços e arestas paralelas de ambos os grafos.
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: B</div>
-          <div class="answer-box">A soma G1 + G2 mantém todos os vértices e arestas originais de G1 e G2 e,
-            adicionalmente, acrescenta uma aresta entre cada vértice de G1 e cada vértice de G2. Resulta num grafo maior
-            e mais denso.</div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,17)"><div class="quiz-letter">A</div><div>Somam-se os valores numéricos das matrizes de adjacência.</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,17)"><div class="quiz-letter">B</div><div>Para cada vértice de G1, cria-se uma aresta conectando-o a todo vértice de G2.</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,17)"><div class="quiz-letter">C</div><div>Multiplicam-se os graus dos vértices correspondentes.</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,17)"><div class="quiz-letter">D</div><div>Excluem-se os laços e arestas paralelas de ambos os grafos.</div></div>
+          <button class="quiz-btn" id="btn-17" onclick="submitQuiz(17,'b','Soma G1+G2: mantém todos os vértices/arestas originais e acrescenta uma aresta entre cada vértice de G1 e de G2.')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-17"></div>
         </div>
       </div>
 
       <!-- Q18 -->
-      <div class="question-card">
+      <div class="question-card" id="q-18">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">18</div>
           <div class="q-text">Um Bloco é formalmente definido como:</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option correct">
-            <div class="option-letter">a</div> Um subgrafo 2-conexo maximal ou uma aresta simples (K₂).
-          </div>
-          <div class="option">
-            <div class="option-letter">b</div> Um grafo trivial de um único vértice.
-          </div>
-          <div class="option">
-            <div class="option-letter">c</div> Qualquer ciclo de comprimento ímpar no grafo.
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> O centro geométrico de qualquer grafo planar.
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: A</div>
-          <div class="answer-box">Bloco = subgrafo biconexo maximal (não pode adicionar mais vértices sem criar
-            articulação) ou K₂ (uma aresta entre dois vértices). Se um vértice está em dois blocos, ele é articulação.
-          </div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,18)"><div class="quiz-letter">A</div><div>Um subgrafo 2-conexo maximal ou uma aresta simples (K₂).</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,18)"><div class="quiz-letter">B</div><div>Um grafo trivial de um único vértice.</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,18)"><div class="quiz-letter">C</div><div>Qualquer ciclo de comprimento ímpar no grafo.</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,18)"><div class="quiz-letter">D</div><div>O centro geométrico de qualquer grafo planar.</div></div>
+          <button class="quiz-btn" id="btn-18" onclick="submitQuiz(18,'a','Bloco = subgrafo biconexo maximal (sem articulação) ou K2. Se um vértice está em dois blocos, é articulação.')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-18"></div>
         </div>
       </div>
 
       <!-- Q19 -->
-      <div class="question-card">
+      <div class="question-card" id="q-19">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">19</div>
-          <div class="q-text">Se você soma as complexidades O(N) + O(N²), qual é o resultado final considerado?</div>
+          <div class="q-text">Se você soma as complexidades O(N) + O(N²), qual é o resultado final?</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option">
-            <div class="option-letter">a</div> O(N³)
-          </div>
-          <div class="option">
-            <div class="option-letter">b</div> O(1)
-          </div>
-          <div class="option">
-            <div class="option-letter">c</div> O(N)
-          </div>
-          <div class="option correct">
-            <div class="option-letter">d</div> O(N²) — o termo dominante sempre prevalece
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: D</div>
-          <div class="answer-box">Na análise assintótica, o termo de maior ordem domina e os menores são descartados.
-            O(N) + O(N²) = O(N²). Igualmente: O(1) + O(N) + O(N²) = O(N²). A constante mais alta "engole" as menores.
-          </div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,19)"><div class="quiz-letter">A</div><div>O(N³)</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,19)"><div class="quiz-letter">B</div><div>O(1)</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,19)"><div class="quiz-letter">C</div><div>O(N)</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,19)"><div class="quiz-letter">D</div><div>O(N²) — o termo dominante sempre prevalece</div></div>
+          <button class="quiz-btn" id="btn-19" onclick="submitQuiz(19,'d','Na análise assintótica, o maior termo domina e os menores são descartados. O(N)+O(N²) = O(N²).')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-19"></div>
         </div>
       </div>
 
       <!-- Q20 -->
-      <div class="question-card">
+      <div class="question-card" id="q-20">
         <div class="question-header" onclick="toggle(this)">
           <div class="q-num fechada">20</div>
           <div class="q-text">O que significa a operação de Concatenação (//) em cadeias NÃO ser comutativa?</div>
           <div class="q-toggle">▼</div>
         </div>
         <div class="question-body">
-          <div class="option correct">
-            <div class="option-letter">a</div> Significa que C₁ // C₂ ≠ C₂ // C₁ — a ordem das cadeias importa.
-          </div>
-          <div class="option">
-            <div class="option-letter">b</div> Significa que o resultado é sempre o elemento neutro lambda.
-          </div>
-          <div class="option">
-            <div class="option-letter">c</div> Significa que a concatenação anula os fechos do grafo.
-          </div>
-          <div class="option">
-            <div class="option-letter">d</div> Significa que só ocorre em grafos completos Kₙ.
-          </div>
-          <div class="gabarito-badge">✓ Gabarito: A</div>
-          <div class="answer-box">A concatenação C1 // C2 emenda o fim de C1 com o início de C2. Como o percurso tem
-            direção, trocar a ordem (C2 // C1) resulta num trajeto completamente diferente — por isso não é comutativa.
-          </div>
+          <div class="quiz-option" data-letter="a" onclick="selectOption(this,20)"><div class="quiz-letter">A</div><div>Significa que C₁ // C₂ ≠ C₂ // C₁ — a ordem das cadeias importa.</div></div>
+          <div class="quiz-option" data-letter="b" onclick="selectOption(this,20)"><div class="quiz-letter">B</div><div>Significa que o resultado é sempre o elemento neutro lambda.</div></div>
+          <div class="quiz-option" data-letter="c" onclick="selectOption(this,20)"><div class="quiz-letter">C</div><div>Significa que a concatenação anula os fechos do grafo.</div></div>
+          <div class="quiz-option" data-letter="d" onclick="selectOption(this,20)"><div class="quiz-letter">D</div><div>Significa que só ocorre em grafos completos Kₙ.</div></div>
+          <button class="quiz-btn" id="btn-20" onclick="submitQuiz(20,'a','C1//C2 emenda o fim de C1 com o início de C2. Inverter a ordem produz um trajeto diferente — por isso não é comutativa.')">✔ Responder</button>
+          <div class="quiz-feedback" id="fb-20"></div>
         </div>
       </div>
-      <!-- Q21-30 ABERTAS -->
+<!-- Q21-30 ABERTAS -->
       <div class="q-divider"><span>B — QUESTOES ABERTAS (21 a 30)</span></div>
 
       <!-- Q21 -->
